@@ -2,7 +2,12 @@ from django.shortcuts import render, redirect, HttpResponse
 from .forms import RegisterForm, LoginForm
 from .models import User
 from django.contrib import messages
+from . import forms
+from . import models
 import hashlib
+
+from .functions import findCurrentUser
+from bson import ObjectId
 
 from rest_framework.decorators import api_view, permission_classes 
 from rest_framework.permissions import IsAuthenticated
@@ -33,7 +38,7 @@ def registration_form(request):
             user.save()
 
                         
-            ## creating a JWTCompatibleUser 
+            # creating a JWTCompatibleUser 
             class JWTCompatibleUser:
                 def __init__(self, user):
                     self.id = str(user.id) 
@@ -46,7 +51,8 @@ def registration_form(request):
 
             ## creating token
             jwt_user = JWTCompatibleUser(user)
-            refresh = RefreshToken.for_user(jwt_user)
+            refresh = RefreshToken.for_user(user)
+
 
             response = redirect('/user/login/')
             response.set_cookie('access_token', str(refresh.access_token), httponly=False)
@@ -72,7 +78,7 @@ def login_view(request):
                 user = User.objects.get(user_email=instantaneous_user_email)
                 if user.user_password == instantaneous_user_password:
                     
-                    ## creating a JWTCompatibleUser 
+                    # creating a JWTCompatibleUser 
                     class JWTCompatibleUser:
                         def __init__(self, user):
                             self.id = str(user.id) 
@@ -83,16 +89,18 @@ def login_view(request):
                             return True     
 
                     
+                    
                     jwt_user = JWTCompatibleUser(user)
-                    refresh = RefreshToken.for_user(jwt_user)
-
+                    refresh = RefreshToken.for_user(user)
+                    
                     # ✅ Redirect with JWT tokens as cookies
-                    response = redirect('/home/')  # your protected route
+                    ## returning reponse is very very important step, there's a subtle difference between return response and return redirect('/user/home'), as it may seem the same, but in reality it isn't. reponse actually contains  the cookies which in turn contains JWT token. So when we say return redirect('/user/home') it actually doesn't contain any cookies and hence as you can see the logic in the decorator, it will be just re-directed to /user/login
+                    response = redirect('/user/home/')  # your protected route
                     response.set_cookie('access_token', str(refresh.access_token), httponly=False)
                     response.set_cookie('refresh_token', str(refresh), httponly=False)
 
 
-                    return redirect('/user/home/')
+                    return response
                 else:
                     return render(request, 'user_login.html', {'form' : form, 'error_message' : "Incorrect password"})
             except Exception as e: 
@@ -106,11 +114,294 @@ def login_view(request):
 def user_home(request):
     user_id = request.jwt_payload.get('user_id')
 
+    print(findCurrentUser(request))
+
     return render(request, 'user_home.html', {'user_id' : user_id})
 
 
 
 
+def category_test(request):
 
+    if request.method == 'POST':
+        category_test_form = forms.TestForm(request.POST, request.FILES)
+
+        if category_test_form.is_valid():
+            data = category_test_form.cleaned_data
+            donation = models.User_Donation(
+                quantity = data['quantity'],
+                drop_off_location = data['drop_off_location'],
+                date = data['date'],
+                item = 'TestItem',
+            )
+
+            donation.photo.put(data['photo'], content_type=data['photo'].content_type)
+            
+            current_user_id = findCurrentUser(request)
+
+            if current_user_id != None:
+                print(current_user_id)
+                user = User.objects.get(id=ObjectId(current_user_id))
+                print(user)
+                user.user_donations.append(donation)
+
+                user.save()
+
+                print("Submitting the form ")
+                return HttpResponse("Requestion sent successfully")
+
+            return redirect('/user/login')
+    
+    category_test_form = forms.TestForm()
+    return render(request, 'category_test.html', {'form' : category_test_form})
+
+def user_pending_requests(request):
+    id = findCurrentUser(request)
+    user_donations = models.User.objects.get(id=ObjectId(id)).user_donations# this contains the entire collection 
+    return render(request, 'user_pending_requests.html', {'user_donations' : user_donations})
+
+def category_clothes(request):
+
+    if request.method == 'POST':
+        category_test_form = forms.TestForm(request.POST, request.FILES)
+
+        if category_test_form.is_valid():
+            data = category_test_form.cleaned_data
+            donation = models.User_Donation(
+                quantity = data['quantity'],
+                drop_off_location = data['drop_off_location'],
+                date = data['date'],
+                item = 'Clothes',
+            )
+
+            donation.photo.put(data['photo'], content_type=data['photo'].content_type)
+
+            current_user_id = findCurrentUser(request)
+
+            if current_user_id != None:
+                print(current_user_id)
+                user = User.objects.get(id=ObjectId(current_user_id))
+                print(user)
+                user.user_donations.append(donation)
+
+                user.save()
+
+                print("Submitting the form ")
+                return HttpResponse("Requestion sent successfully")
+
+            return redirect('/user/login')
+    
+    category_test_form = forms.TestForm()
+    return render(request, 'category_test.html', {'form' : category_test_form})
+
+def category_ration(request):
+
+    if request.method == 'POST':
+        category_test_form = forms.TestForm(request.POST, request.FILES)
+
+        if category_test_form.is_valid():
+            data = category_test_form.cleaned_data
+            donation = models.User_Donation(
+                quantity = data['quantity'],
+                drop_off_location = data['drop_off_location'],
+                date = data['date'],
+                item = 'Ration',
+            )
+
+            donation.photo.put(data['photo'], content_type=data['photo'].content_type)
+
+            current_user_id = findCurrentUser(request)
+
+            if current_user_id != None:
+                print(current_user_id)
+                user = User.objects.get(id=ObjectId(current_user_id))
+                print(user)
+                user.user_donations.append(donation)
+
+                user.save()
+
+                print("Submitting the form ")
+                return HttpResponse("Requestion sent successfully")
+
+            return redirect('/user/login')
+
+    
+    category_test_form = forms.TestForm()
+    return render(request, 'category_test.html', {'form' : category_test_form})
+
+def category_medical_supplies(request):
+
+    if request.method == 'POST':
+        category_test_form = forms.TestForm(request.POST, request.FILES)
+
+        if category_test_form.is_valid():
+            data = category_test_form.cleaned_data
+            donation = models.User_Donation(
+                quantity = data['quantity'],
+                drop_off_location = data['drop_off_location'],
+                date = data['date'],
+                item = 'Medical Supplies',
+            )
+
+            donation.photo.put(data['photo'], content_type=data['photo'].content_type)
+
+            current_user_id = findCurrentUser(request)
+
+            if current_user_id != None:
+                print(current_user_id)
+                user = User.objects.get(id=ObjectId(current_user_id))
+                print(user)
+                user.user_donations.append(donation)
+
+                user.save()
+
+                print("Submitting the form ")
+                return HttpResponse("Requestion sent successfully")
+
+            return redirect('/user/login')
+
+    
+    category_test_form = forms.TestForm()
+    return render(request, 'category_test.html', {'form' : category_test_form})
+
+def category_toys(request):
+
+    if request.method == 'POST':
+        category_test_form = forms.TestForm(request.POST, request.FILES)
+
+        if category_test_form.is_valid():
+            data = category_test_form.cleaned_data
+            donation = models.User_Donation(
+                quantity = data['quantity'],
+                drop_off_location = data['drop_off_location'],
+                date = data['date'],
+                item = 'Toys',
+            )
+
+            donation.photo.put(data['photo'], content_type=data['photo'].content_type)
+
+            current_user_id = findCurrentUser(request)
+
+            if current_user_id != None:
+                print(current_user_id)
+                user = User.objects.get(id=ObjectId(current_user_id))
+                print(user)
+                user.user_donations.append(donation)
+
+                user.save()
+
+                print("Submitting the form ")
+                return HttpResponse("Requestion sent successfully")
+
+            return redirect('/user/login')
+
+    
+    category_test_form = forms.TestForm()
+    return render(request, 'category_test.html', {'form' : category_test_form})
+
+def category_daily_use(request):
+
+    if request.method == 'POST':
+        category_test_form = forms.TestForm(request.POST, request.FILES)
+
+        if category_test_form.is_valid():
+            data = category_test_form.cleaned_data
+            donation = models.User_Donation(
+                quantity = data['quantity'],
+                drop_off_location = data['drop_off_location'],
+                date = data['date'],
+                item = 'Daily Use',
+            )
+
+            donation.photo.put(data['photo'], content_type=data['photo'].content_type)
+
+            current_user_id = findCurrentUser(request)
+
+            if current_user_id != None:
+                print(current_user_id)
+                user = User.objects.get(id=ObjectId(current_user_id))
+                print(user)
+                user.user_donations.append(donation)
+
+                user.save()
+
+                print("Submitting the form ")
+                return HttpResponse("Requestion sent successfully")
+
+            return redirect('/user/login')
+
+    
+    category_test_form = forms.TestForm()
+    return render(request, 'category_test.html', {'form' : category_test_form})
+
+def category_stationary(request):
+
+    if request.method == 'POST':
+        category_test_form = forms.TestForm(request.POST, request.FILES)
+
+        if category_test_form.is_valid():
+            data = category_test_form.cleaned_data
+            donation = models.User_Donation(
+                quantity = data['quantity'],
+                drop_off_location = data['drop_off_location'],
+                date = data['date'],
+                item = 'Stationary',
+            )
+
+            donation.photo.put(data['photo'], content_type=data['photo'].content_type)
+
+            current_user_id = findCurrentUser(request)
+
+            if current_user_id != None:
+                print(current_user_id)
+                user = User.objects.get(id=ObjectId(current_user_id))
+                print(user)
+                user.user_donations.append(donation)
+
+                user.save()
+
+                print("Submitting the form ")
+                return HttpResponse("Requestion sent successfully")
+
+            return redirect('/user/login')
+
+    
+    category_test_form = forms.TestForm()
+    return render(request, 'category_test.html', {'form' : category_test_form})
+
+def category_utensils(request):
+
+    if request.method == 'POST':
+        category_test_form = forms.TestForm(request.POST, request.FILES)
+
+        if category_test_form.is_valid():
+            data = category_test_form.cleaned_data
+            donation = models.User_Donation(
+                quantity = data['quantity'],
+                drop_off_location = data['drop_off_location'],
+                date = data['date'],
+                item = 'Utensils',
+            )
+
+            donation.photo.put(data['photo'], content_type=data['photo'].content_type)
+
+            current_user_id = findCurrentUser(request)
+
+            if current_user_id != None:
+                print(current_user_id)
+                user = User.objects.get(id=ObjectId(current_user_id))
+                print(user)
+                user.user_donations.append(donation)
+
+                user.save()
+
+                print("Submitting the form ")
+                return HttpResponse("Requestion sent successfully")
+
+            return redirect('/user/login')
+
+    
+    category_test_form = forms.TestForm()
+    return render(request, 'category_test.html', {'form' : category_test_form})
 
 # ithun mi gaand masti karat ahe

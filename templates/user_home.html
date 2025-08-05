@@ -5,11 +5,18 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
 </head>
-<body>
-    {% if error_message %}
-    <h1>{{error_message}}</h1>
-    {% endif %}
-    <h1>EUu</h1>
-    Id : {{user_id}}
-</body>
+    <body>
+        <ul>
+            <li><a href="/user/category/clothes/">Clothes</a></li>
+            <li><a href="/user/category/ration/">Ration</a></li>
+            <li><a href="/user/category/medical-supplies/">Medical Supplies</a></li>
+            <li><a href="/user/category/toys/">Toys</a></li>
+            <li><a href="/user/category/daily-use/">Daily Use</a></li>
+            <li><a href="/user/category/stationary/">Stationary</a></li>
+            <li><a href="/user/category/utensils/">Utensils</a></li>
+            <li><a href="/user/category/test/">Test</a></li>
+        </ul>
+        <a href="/user/pending_requests">Pending Requests here</a>
+        <h1>{{user_id}}</h1>
+    </body>
 </html>

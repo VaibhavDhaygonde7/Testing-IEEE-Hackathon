@@ -13,6 +13,6 @@ def jwt_required(view_func):
             return view_func(request, *args, **kwargs)
         except Exception as e: 
             print("JWT error: ", e) 
-            return redirect('/user/login/')
+            return redirect('/user/login')
     
     return wrapper
