@@ -5,7 +5,7 @@ def jwt_required(view_func):
     def wrapper(request, *args, **kwargs): 
         token = request.COOKIES.get('access_token')
         if not token: 
-            return redirect('/user/login/')
+            return redirect('/ngo/login/')
         try: 
             access_token = AccessToken(token)
             # now we can access user_email and his/her password using access_token['user_email'] syntax
@@ -14,6 +14,6 @@ def jwt_required(view_func):
         except Exception as e: 
             print("JWT error: ")
             print(e) 
-            return redirect('/user/login')
+            return redirect('/ngo/login')
     
     return wrapper

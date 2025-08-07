@@ -17,5 +17,6 @@ urlpatterns = [
     path('category/daily-use/', views.category_daily_use, name='category_test'),
     path('category/stationary/', views.category_stationary, name='category_test'),
     path('category/utensils/', views.category_utensils, name='category_test'),
-    path('pending_requests/', views.user_pending_requests, name='pending_requests')
+    path('pending_requests/', views.user_pending_requests, name='pending_requests'),
+    path('form/', views.temp_form, name='temp_form')
 ]

@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <!-- <h1>Hello</h1>
+    <h3>{{ ngo_id }}</h3> -->
+    {% for category in categories %}
+        <p>{{category.category_name}}</p>
+        <p>{{category.category_quantity}}</p>
+    <a href="/ngo/category/{{ category.category_name }}/">Add {{category.category_name}}</a>
+    {% endfor %}
+
+    <a href="/ngo/ngo_cart">Cart</a>
+
+</body>
+</html>

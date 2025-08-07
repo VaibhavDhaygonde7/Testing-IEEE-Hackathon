@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'user_auth_and_backend',
     'rest_framework',
+    'NGO',
 ]
 
 ## for authentication purposes

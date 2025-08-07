@@ -13,6 +13,10 @@ class LoginForm(forms.Form):
     user_password = forms.CharField(required=True, widget=forms.PasswordInput)
 
 
+class Categories(forms.Form):
+    category_name = forms.CharField(required=True)
+    category_quantity = forms.IntegerField(required=True, min_value=0)
+
 class TestForm(forms.Form):
     quantity = forms.IntegerField(
         label="Quantity",

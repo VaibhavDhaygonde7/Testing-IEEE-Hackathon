@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect, HttpResponse
 from .forms import RegisterForm, LoginForm
-from .models import User
+from .models import User, Global_Categories
 from django.contrib import messages
 from . import forms
 from . import models
@@ -121,6 +121,7 @@ def user_home(request):
 
 
 
+@jwt_required
 def category_test(request):
 
     if request.method == 'POST':
@@ -155,11 +156,13 @@ def category_test(request):
     category_test_form = forms.TestForm()
     return render(request, 'category_test.html', {'form' : category_test_form})
 
+@jwt_required
 def user_pending_requests(request):
     id = findCurrentUser(request)
     user_donations = models.User.objects.get(id=ObjectId(id)).user_donations# this contains the entire collection 
     return render(request, 'user_pending_requests.html', {'user_donations' : user_donations})
 
+@jwt_required
 def category_clothes(request):
 
     if request.method == 'POST':
@@ -174,10 +177,11 @@ def category_clothes(request):
                 item = 'Clothes',
             )
 
+
             donation.photo.put(data['photo'], content_type=data['photo'].content_type)
 
             current_user_id = findCurrentUser(request)
-
+            print("Hello mi ithe ahe")
             if current_user_id != None:
                 print(current_user_id)
                 user = User.objects.get(id=ObjectId(current_user_id))
@@ -185,6 +189,9 @@ def category_clothes(request):
                 user.user_donations.append(donation)
 
                 user.save()
+
+                category = Global_Categories.objects(id=ObjectId('6893495615af1913e64d9644'))
+                print(category.quantity)
 
                 print("Submitting the form ")
                 return HttpResponse("Requestion sent successfully")
@@ -194,6 +201,7 @@ def category_clothes(request):
     category_test_form = forms.TestForm()
     return render(request, 'category_test.html', {'form' : category_test_form})
 
+@jwt_required
 def category_ration(request):
 
     if request.method == 'POST':
@@ -229,6 +237,7 @@ def category_ration(request):
     category_test_form = forms.TestForm()
     return render(request, 'category_test.html', {'form' : category_test_form})
 
+@jwt_required
 def category_medical_supplies(request):
 
     if request.method == 'POST':
@@ -264,6 +273,7 @@ def category_medical_supplies(request):
     category_test_form = forms.TestForm()
     return render(request, 'category_test.html', {'form' : category_test_form})
 
+@jwt_required
 def category_toys(request):
 
     if request.method == 'POST':
@@ -299,6 +309,7 @@ def category_toys(request):
     category_test_form = forms.TestForm()
     return render(request, 'category_test.html', {'form' : category_test_form})
 
+@jwt_required
 def category_daily_use(request):
 
     if request.method == 'POST':
@@ -334,6 +345,7 @@ def category_daily_use(request):
     category_test_form = forms.TestForm()
     return render(request, 'category_test.html', {'form' : category_test_form})
 
+@jwt_required
 def category_stationary(request):
 
     if request.method == 'POST':
@@ -369,6 +381,7 @@ def category_stationary(request):
     category_test_form = forms.TestForm()
     return render(request, 'category_test.html', {'form' : category_test_form})
 
+@jwt_required
 def category_utensils(request):
 
     if request.method == 'POST':
@@ -405,3 +418,19 @@ def category_utensils(request):
     return render(request, 'category_test.html', {'form' : category_test_form})
 
 # ithun mi gaand masti karat ahe
+
+def temp_form(request):
+    if request.method == 'POST':
+        form = forms.Categories(request.POST)
+
+        if form.is_valid():
+            category = models.Global_Categories(
+                category_name = form.cleaned_data['category_name'],
+                category_quantity = form.cleaned_data['category_quantity']
+            )
+            category.save()
+
+            return HttpResponse("happy")
+    
+    form = forms.RegisterForm()
+    return render(request, 'temp_form.html', {'form' : form})
