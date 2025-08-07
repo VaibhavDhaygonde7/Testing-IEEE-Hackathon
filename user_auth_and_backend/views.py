@@ -417,7 +417,6 @@ def category_utensils(request):
     category_test_form = forms.TestForm()
     return render(request, 'category_test.html', {'form' : category_test_form})
 
-# ithun mi gaand masti karat ahe
 
 def temp_form(request):
     if request.method == 'POST':

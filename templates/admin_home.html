@@ -16,10 +16,11 @@
                 <h4>Drop-off location : {{requests.drop_off_location}}</h4>
                 <h4>Date : {{requests.date}}</h4>
                 <h4>Item : {{requests.item}}</h4>
-                            
                 {% if requests.photo %}
                     <img src="{% url 'serve_photo' requests.photo.grid_id %}" alt="Donation Photo" width="200">
                 {% endif %}
+                <a href='/admin/approve/?user_id={{user.id}}&photo_id={{requests.photo.grid_id}}'>Approve</a>
+                <a href='/admin/reject/?user_id={{user.id}}&photo_id={{requests.photo.grid_id}}'>Reject</a>
 
             {% endfor %}
         </p>

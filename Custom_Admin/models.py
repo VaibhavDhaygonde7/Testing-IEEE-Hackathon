@@ -17,3 +17,10 @@ class User(Document):
     user_password = StringField(required=True)
     user_phone_number = StringField(max_length=10)
     user_donations = ListField(EmbeddedDocumentField(User_Donation), default=[])   
+
+
+
+class Global_Categories(Document):
+    category_name = StringField(required=True, max_length=100)
+    category_quantity = IntField(required=True,default=0)
+    meta = {'collection' : 'global_categories'}
