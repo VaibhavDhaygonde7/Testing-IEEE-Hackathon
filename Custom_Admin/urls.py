@@ -6,4 +6,5 @@ urlpatterns = [
     path('home/', views.home, name='Admin_home'),
     path('photo/<str:photo_id>/', views.serve_photo, name='serve_photo'),
     path('approve/', views.admin_approve, name='admin_approve'),
+    path('reject/', views.admin_reject, name='admin_reject'),
 ]

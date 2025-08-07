@@ -9,6 +9,7 @@
     <h1>It's my home bitch</h1>
     
     {% for user in users %}
+        {% if user.user_donations %}
         <h2>{{user.user_name}}</h2>
         <p>
             {% for requests in user.user_donations %}
@@ -24,6 +25,7 @@
 
             {% endfor %}
         </p>
+        {% endif %}
     {% endfor %}
 
 </body>
