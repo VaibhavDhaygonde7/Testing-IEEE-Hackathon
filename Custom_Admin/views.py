@@ -1,6 +1,8 @@
 from django.shortcuts import render, HttpResponse, redirect, Http404
 from . import models
 from bson import ObjectId
+from mongoengine.connection import get_db
+from gridfs import GridFS
 # Create your views here.
 
 def admin_verification(request):
@@ -17,12 +19,11 @@ def home(request):
     users = models.User.objects()
     return render(request, 'admin_home.html', {'users' : users})
 
-
-def serve_photo(request, user_id, file_id):
-    user = models.User.objects(id=ObjectId(user_id))
-    for donation_photos in user.user_donations:
-        if donation_photos.photo == ObjectId(file_id):
-            content_type = donation_photos.photo.content_type or "image/jpeg"    
-            return HttpResponse(donation_photos.photo.read(), content_type=content_type)
-
-    return HttpResponse("Not found")    
+def serve_photo(request, photo_id):
+    try:
+        db = get_db()  # gets the currently connected MongoEngine DB
+        fs = GridFS(db)
+        file = fs.get(ObjectId(photo_id))
+        return HttpResponse(file.read(), content_type='image/jpeg')  # or detect content type dynamically
+    except Exception as e:
+        return HttpResponse(f"Error retrieving photo: {str(e)}", status=404)
