@@ -3,24 +3,475 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>NGO Login - DonateConnect</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .login-container {
+            background: white;
+            padding: 3rem;
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            width: 100%;
+            max-width: 450px;
+            position: relative;
+            animation: slideUp 0.6s ease-out;
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .logo-section {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .logo {
+            font-size: 2.5rem;
+            font-weight: bold;
+            color: #667eea;
+            text-decoration: none;
+            display: inline-block;
+            margin-bottom: 0.5rem;
+        }
+
+        .login-title {
+            font-size: 2rem;
+            color: #2c3e50;
+            text-align: center;
+            margin-bottom: 0.5rem;
+        }
+
+        .login-subtitle {
+            color: #5a6c7d;
+            text-align: center;
+            margin-bottom: 2rem;
+            font-size: 1rem;
+        }
+
+        /* Error Message Display */
+        .error-message {
+            background: linear-gradient(135deg, #ff6b6b 0%, #ee5a52 100%);
+            color: white;
+            padding: 1rem;
+            border-radius: 12px;
+            margin-bottom: 2rem;
+            box-shadow: 0 8px 20px rgba(255, 107, 107, 0.3);
+            border-left: 4px solid #ff5252;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            animation: shake 0.5s ease-in-out;
+            font-size: 0.95rem;
+        }
+
+        @keyframes shake {
+            0%, 20%, 40%, 60%, 80% {
+                transform: translateX(0);
+            }
+            10%, 30%, 50%, 70% {
+                transform: translateX(-5px);
+            }
+        }
+
+        .error-icon {
+            font-size: 1.2rem;
+            flex-shrink: 0;
+        }
+
+        /* Django Form Styling */
+        .django-form {
+            width: 100%;
+        }
+
+        .django-form p {
+            margin-bottom: 1.5rem;
+            position: relative;
+        }
+
+        .django-form label {
+            display: block;
+            font-weight: 600;
+            color: #2c3e50;
+            margin-bottom: 0.5rem;
+            font-size: 0.95rem;
+            text-transform: capitalize;
+        }
+
+        .django-form input {
+            width: 100%;
+            padding: 1rem;
+            border: 2px solid #e9ecef;
+            border-radius: 12px;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            background: #f8f9fa;
+        }
+
+        .django-form input:focus {
+            outline: none;
+            border-color: #667eea;
+            background: white;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+            transform: translateY(-1px);
+        }
+
+        .django-form input:hover {
+            border-color: #667eea;
+            background: white;
+        }
+
+        /* Error styling for Django form errors */
+        .django-form .errorlist {
+            list-style: none;
+            margin: 0.5rem 0 0 0;
+            padding: 0;
+        }
+
+        .django-form .errorlist li {
+            color: #e74c3c;
+            font-size: 0.85rem;
+            background: #fdf2f2;
+            padding: 0.5rem;
+            border-radius: 8px;
+            border-left: 3px solid #e74c3c;
+            margin-top: 0.5rem;
+            animation: fadeInDown 0.3s ease-out;
+        }
+
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-5px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .django-form input.error {
+            border-color: #e74c3c;
+            background: #fdf2f2;
+        }
+
+        .login-btn {
+            width: 100%;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 1rem;
+            border: none;
+            border-radius: 12px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+            position: relative;
+            overflow: hidden;
+            margin-top: 1rem;
+        }
+
+        .login-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.4);
+        }
+
+        .login-btn:active {
+            transform: translateY(0);
+        }
+
+        .login-btn:disabled {
+            opacity: 0.7;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        /* Loading state */
+        .login-btn.loading {
+            opacity: 0.8;
+            cursor: not-allowed;
+        }
+
+        .login-btn.loading::after {
+            content: "";
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 20px;
+            height: 20px;
+            border: 2px solid transparent;
+            border-top: 2px solid white;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: translate(-50%, -50%) rotate(0deg); }
+            100% { transform: translate(-50%, -50%) rotate(360deg); }
+        }
+
+        .login-btn.loading span {
+            opacity: 0;
+        }
+
+        .back-home {
+            position: absolute;
+            top: -60px;
+            left: 0;
+        }
+
+        .back-home a {
+            color: white;
+            text-decoration: none;
+            font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: opacity 0.3s;
+        }
+
+        .back-home a:hover {
+            opacity: 0.8;
+        }
+
+        .forgot-password {
+            text-align: center;
+            margin-top: 1.5rem;
+        }
+
+        .forgot-password a {
+            color: #667eea;
+            text-decoration: none;
+            font-size: 0.9rem;
+            transition: color 0.3s;
+        }
+
+        .forgot-password a:hover {
+            color: #764ba2;
+            text-decoration: underline;
+        }
+
+        .divider {
+            text-align: center;
+            margin: 2rem 0;
+            position: relative;
+            color: #95a5a6;
+            font-size: 0.9rem;
+        }
+
+        .divider::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: #e9ecef;
+        }
+
+        .divider span {
+            background: white;
+            padding: 0 1rem;
+        }
+
+        .info-section {
+            text-align: center;
+            padding: 1.5rem;
+            background: #f8f9fa;
+            border-radius: 12px;
+            margin-top: 1.5rem;
+        }
+
+        .info-section p {
+            color: #5a6c7d;
+            font-size: 0.9rem;
+            line-height: 1.6;
+        }
+
+        .info-section strong {
+            color: #2c3e50;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .login-container {
+                margin: 1rem;
+                padding: 2rem;
+            }
+
+            .login-title {
+                font-size: 1.8rem;
+            }
+
+            .back-home {
+                position: static;
+                margin-bottom: 1rem;
+                text-align: center;
+            }
+        }
+
+        /* Placeholder text styling */
+        .django-form input::placeholder {
+            color: #95a5a6;
+            font-style: italic;
+        }
+
+        /* Form field focus effects */
+        .django-form p {
+            position: relative;
+            transition: transform 0.3s ease;
+        }
+
+        .django-form p:focus-within {
+            transform: translateY(-2px);
+        }
+    </style>
 </head>
 <body>
-    <h2>NGO login</h2>
-    {% if error_message == "NGO not found" %}
-        <p>{{error_message}}</p>
-        <a href="/ngo/register">Register</a>
-    {% endif %}
+    <div class="login-container">
+        <div class="back-home">
+            <a href="/">← Back to Home</a>
+        </div>
 
-    {% if error_message == "Password Incorrect" %}
-        <p>{{error_message}}</p>
-    {% endif %}
-    
-    <form action="" method="post">
-        {% csrf_token %}
-        {{ form.as_p }}
-        <button type="submit">Log in</button>
-    </form>
+        <div class="logo-section">
+            <a href="/" class="logo">DonateConnect</a>
+        </div>
 
+        <h2 class="login-title">NGO Portal</h2>
+        <p class="login-subtitle">Sign in to manage your organization's donations</p>
+
+        <!-- Error Message Display -->
+        {% if error_message %}
+            <div class="error-message">
+                <span class="error-icon">⚠️</span>
+                <span>{{ error_message }}</span>
+            </div>
+        {% endif %}
+
+        <!-- Django NGO Login Form -->
+        <form action="" method="post" class="django-form" id="ngo-login-form">
+            {% csrf_token %}
+            {{ form.as_p }}
+
+            <button type="submit" class="login-btn" id="login-btn">
+                <span>Sign In</span>
+            </button>
+        </form>
+
+        <div class="forgot-password">
+            <a href="/ngo/forgot-password">Forgot your password?</a>
+        </div>
+
+        <div class="divider">
+            <span>Need Help?</span>
+        </div>
+
+        <div class="info-section">
+            <p><strong>NGO Access Only</strong></p>
+            <p>This portal is exclusively for registered NGOs. If you're a donor looking to contribute items, please visit our <a href="/user/login" style="color: #667eea; text-decoration: none;">donor portal</a>.</p>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const form = document.getElementById('ngo-login-form');
+            const loginBtn = document.getElementById('login-btn');
+            const inputs = form.querySelectorAll('input:not([name="csrfmiddlewaretoken"])');
+
+            // Add appropriate placeholders for NGO login fields
+            inputs.forEach(input => {
+                const fieldType = input.type;
+                const fieldName = input.name.toLowerCase();
+                
+                if (fieldName.includes('email') || fieldType === 'email') {
+                    input.placeholder = 'Enter your NGO email address';
+                } else if (fieldName.includes('password') || fieldType === 'password') {
+                    input.placeholder = 'Enter your password';
+                } else if (fieldName.includes('username')) {
+                    input.placeholder = 'Enter your NGO username';
+                } else if (fieldName.includes('ngo_id') || fieldName.includes('id')) {
+                    input.placeholder = 'Enter your NGO ID';
+                } else if (fieldName.includes('registration') || fieldName.includes('reg')) {
+                    input.placeholder = 'Enter registration number';
+                }
+
+                // Clear error states when user starts typing
+                input.addEventListener('input', function() {
+                    this.classList.remove('error');
+                    const errorList = this.parentElement.querySelector('.errorlist');
+                    if (errorList) {
+                        errorList.style.display = 'none';
+                    }
+                });
+
+                // Focus effect
+                input.addEventListener('focus', function() {
+                    this.classList.remove('error');
+                });
+            });
+
+            // Form submission handling
+            form.addEventListener('submit', function(e) {
+                loginBtn.classList.add('loading');
+                loginBtn.disabled = true;
+            });
+
+            // Remove loading state if page reloads with errors
+            window.addEventListener('load', function() {
+                loginBtn.classList.remove('loading');
+                loginBtn.disabled = false;
+            });
+        });
+    </script>
 </body>
 </html>
+
+
+
+
+
+
+
+
+
+<!-- 
+<h2>NGO login</h2>
+{% if error_message == "NGO not found" %}
+    <p>{{error_message}}</p>
+    <a href="/ngo/register">Register</a>
+{% endif %}
+
+{% if error_message == "Password Incorrect" %}
+    <p>{{error_message}}</p>
+{% endif %}
+
+<form action="" method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Log in</button>
+</form> -->

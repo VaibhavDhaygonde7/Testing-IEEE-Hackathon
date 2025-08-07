@@ -3,6 +3,721 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Dashboard - DonateConnect</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background-color: #f8f9fa;
+        }
+
+        /* Header Section */
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 1rem 0;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 2rem;
+        }
+
+        .logo {
+            font-size: 2rem;
+            font-weight: bold;
+            color: #fff;
+            text-decoration: none;
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+            align-items: center;
+        }
+
+        .nav-links a {
+            color: white;
+            text-decoration: none;
+            font-weight: 500;
+            transition: opacity 0.3s;
+        }
+
+        .nav-links a:hover {
+            opacity: 0.8;
+        }
+
+        .logout-btn {
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            padding: 0.5rem 1rem;
+            border-radius: 25px;
+            text-decoration: none;
+            transition: all 0.3s;
+        }
+
+        .logout-btn:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: translateY(-1px);
+        }
+
+        /* Welcome Section */
+        .welcome-section {
+            background: linear-gradient(rgba(102, 126, 234, 0.1), rgba(118, 75, 162, 0.1));
+            padding: 4rem 0;
+            text-align: center;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+        .welcome-content h1 {
+            font-size: 3.5rem;
+            margin-bottom: 1rem;
+            color: #2c3e50;
+            font-weight: 700;
+        }
+
+        .welcome-content p {
+            font-size: 1.3rem;
+            color: #5a6c7d;
+            max-width: 700px;
+            margin: 0 auto 2rem;
+        }
+
+        .user-stats {
+            background: rgba(255, 255, 255, 0.9);
+            padding: 2rem;
+            border-radius: 20px;
+            display: inline-block;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            margin-top: 2rem;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 2rem;
+            align-items: center;
+        }
+
+        .stat-item {
+            text-align: center;
+        }
+
+        .stat-number {
+            font-size: 2rem;
+            font-weight: bold;
+            color: #667eea;
+            display: block;
+        }
+
+        .stat-label {
+            font-size: 0.9rem;
+            color: #5a6c7d;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        /* Categories Section */
+        .categories-section {
+            padding: 4rem 0;
+            background: white;
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: 2.5rem;
+            color: #2c3e50;
+            margin-bottom: 1rem;
+        }
+
+        .section-subtitle {
+            text-align: center;
+            color: #5a6c7d;
+            font-size: 1.1rem;
+            margin-bottom: 3rem;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .categories-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+        .category-card {
+            background: white;
+            border-radius: 20px;
+            padding: 2rem;
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+            border: 2px solid #f8f9fa;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .category-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+
+        .category-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+            border-color: #667eea;
+        }
+
+        .category-icon {
+            font-size: 4rem;
+            margin-bottom: 1.5rem;
+            display: block;
+        }
+
+        .category-card h3 {
+            font-size: 1.8rem;
+            margin-bottom: 1rem;
+            color: #2c3e50;
+            font-weight: 600;
+        }
+
+        .category-description {
+            color: #5a6c7d;
+            margin-bottom: 2rem;
+            line-height: 1.6;
+            font-size: 1rem;
+        }
+
+        .category-stats {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 2rem;
+            padding: 1rem;
+            background: #f8f9fa;
+            border-radius: 12px;
+        }
+
+        .donate-btn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 1rem 2rem;
+            border: none;
+            border-radius: 25px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            display: inline-block;
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+        }
+
+        .donate-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.4);
+            text-decoration: none;
+            color: white;
+        }
+
+        /* How It Works Section */
+        .how-it-works {
+            background: #f8f9fa;
+            padding: 4rem 0;
+        }
+
+        .steps-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem;
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+        .step-card {
+            background: white;
+            padding: 2.5rem;
+            border-radius: 20px;
+            text-align: center;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .step-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(0,0,0,0.15);
+        }
+
+        .step-number {
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            font-weight: bold;
+            margin: 0 auto 1.5rem;
+        }
+
+        .step-card h4 {
+            font-size: 1.3rem;
+            color: #2c3e50;
+            margin-bottom: 1rem;
+        }
+
+        .step-card p {
+            color: #5a6c7d;
+            line-height: 1.6;
+        }
+
+        /* Impact Section */
+        .impact-section {
+            background: white;
+            padding: 4rem 0;
+        }
+
+        .impact-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 2rem;
+            max-width: 800px;
+            margin: 2rem auto 0;
+            padding: 0 2rem;
+        }
+
+        .impact-item {
+            text-align: center;
+            padding: 2rem;
+            background: #f8f9fa;
+            border-radius: 15px;
+            transition: all 0.3s ease;
+        }
+
+        .impact-item:hover {
+            background: #e9ecef;
+            transform: translateY(-3px);
+        }
+
+        .impact-number {
+            font-size: 2.5rem;
+            font-weight: bold;
+            color: #27ae60;
+            display: block;
+            margin-bottom: 0.5rem;
+        }
+
+        .impact-label {
+            color: #2c3e50;
+            font-weight: 600;
+        }
+
+        /* CTA Section */
+        .cta-section {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 4rem 0;
+            text-align: center;
+            color: white;
+        }
+
+        .cta-content h2 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .cta-content p {
+            font-size: 1.2rem;
+            margin-bottom: 2rem;
+            opacity: 0.9;
+        }
+
+        .cta-btn {
+            background: white;
+            color: #667eea;
+            padding: 1.2rem 3rem;
+            border: none;
+            border-radius: 25px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 1.1rem;
+            transition: all 0.3s ease;
+            display: inline-block;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+        }
+
+        .cta-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.3);
+            text-decoration: none;
+            color: #667eea;
+        }
+
+        /* Footer */
+        .footer {
+            background: #2c3e50;
+            color: white;
+            padding: 3rem 0 1rem;
+            text-align: center;
+        }
+
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+        .footer-section {
+            margin-bottom: 2rem;
+        }
+
+        .footer-section h4 {
+            font-size: 1.3rem;
+            margin-bottom: 1rem;
+            color: #ecf0f1;
+        }
+
+        .footer-section p {
+            color: #bdc3c7;
+            line-height: 1.8;
+        }
+
+        .footer-bottom {
+            border-top: 1px solid #34495e;
+            padding-top: 1rem;
+            margin-top: 2rem;
+            color: #95a5a6;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .nav-container {
+                flex-direction: column;
+                gap: 1rem;
+            }
+
+            .nav-links {
+                gap: 1rem;
+            }
+
+            .welcome-content h1 {
+                font-size: 2.5rem;
+            }
+
+            .categories-grid {
+                grid-template-columns: 1fr;
+                gap: 1.5rem;
+            }
+
+            .steps-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .impact-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        /* Loading Animation */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .category-card, .step-card {
+            animation: fadeInUp 0.6s ease-out;
+            animation-fill-mode: both;
+        }
+
+        .category-card:nth-child(1) { animation-delay: 0.1s; }
+        .category-card:nth-child(2) { animation-delay: 0.2s; }
+        .category-card:nth-child(3) { animation-delay: 0.3s; }
+        .category-card:nth-child(4) { animation-delay: 0.4s; }
+        .category-card:nth-child(5) { animation-delay: 0.5s; }
+        .category-card:nth-child(6) { animation-delay: 0.6s; }
+        .category-card:nth-child(7) { animation-delay: 0.7s; }
+    </style>
+</head>
+<body>
+    <!-- Header Section -->
+    <header class="header">
+        <div class="nav-container">
+            <a href="/" class="logo">DonateConnect</a>
+            <ul class="nav-links">
+                <li><a href="/user/home">Home</a></li>
+                <li><a href="/user/pending_requests">My Donations</a></li>
+            </ul>
+        </div>
+    </header>
+
+    <!-- Welcome Section -->
+    <section class="welcome-section">
+        <div class="container">
+            <div class="welcome-content">
+                <h1>Welcome, {{ user.name|default:"Donor" }}!</h1>
+                <p>Make a difference in your community by donating items that can help those in need. Every donation counts towards creating a better world.</p>
+                
+                <!-- <div class="user-stats">
+                    <div class="stats-grid">
+                        <div class="stat-item">
+                            <span class="stat-number">{{ user_donations|default:"0" }}</span>
+                            <span class="stat-label">Items Donated</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-number">{{ ngos_helped|default:"0" }}</span>
+                            <span class="stat-label">NGOs Helped</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-number">{{ impact_score|default:"0" }}</span>
+                            <span class="stat-label">Impact Score</span>
+                        </div>
+                    </div>
+                </div> -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Categories Section -->
+    <section class="categories-section">
+        <div class="container">
+            <h2 class="section-title">Donation Categories</h2>
+            <p class="section-subtitle">Choose from various categories to donate items that can make a real difference in people's lives.</p>
+            
+            <div class="categories-grid">
+                <!-- Clothes Category -->
+                <div class="category-card">
+                    <span class="category-icon">👕</span>
+                    <h3>Clothes</h3>
+                    <p class="category-description">Donate clothing items including shirts, pants, dresses, jackets, and accessories for all ages and sizes.</p>
+                    <!-- <div class="category-stats">
+                        <div class="stat-item">
+                            <span class="stat-number" style="color: #667eea; font-size: 1.5rem;">High</span>
+                            <span class="stat-label">Demand</span>
+                        </div>
+                    </div> -->
+                    <a href="/user/category/clothes" class="donate-btn">Donate Now</a>
+                </div>
+
+                <!-- Ration Category -->
+                <div class="category-card">
+                    <span class="category-icon">🍛</span>
+                    <h3>Ration</h3>
+                    <p class="category-description">Share food items, groceries, and essential nutrition supplies to support community feeding programs.</p>
+                    <!-- <div class="category-stats"> -->
+                        <!-- <div class="stat-item">
+                            <span class="stat-number" style="color: #e74c3c; font-size: 1.5rem;">Urgent</span>
+                            <span class="stat-label">Need</span>
+                        </div> -->
+                    <!-- </div> -->
+                    <a href="/user/category/ration" class="donate-btn">Donate Now</a>
+                </div>
+
+                <!-- Medical Supplies Category -->
+                <div class="category-card">
+                    <span class="category-icon">🏥</span>
+                    <h3>Medical Supplies</h3>
+                    <p class="category-description">Contribute first aid kits, medical equipment, hygiene products, and health-related supplies for community care.</p>
+                    <!-- <div class="category-stats">
+                        <div class="stat-item">
+                            <span class="stat-number" style="color: #667eea; font-size: 1.5rem;">High</span>
+                            <span class="stat-label">Impact</span>
+                        </div>
+                    </div> -->
+                    <a href="/user/category/medical-supplies" class="donate-btn">Donate Now</a>
+                </div>
+
+                <!-- Toys Category -->
+                <div class="category-card">
+                    <span class="category-icon">🧸</span>
+                    <h3>Toys</h3>
+                    <p class="category-description">Bring joy to children by donating educational toys, games, puzzles, and recreational items.</p>
+                    <!-- <div class="category-stats">
+                        <div class="stat-item">
+                            <span class="stat-number" style="color: #f39c12; font-size: 1.5rem;">Medium</span>
+                            <span class="stat-label">Priority</span>
+                        </div>
+                    </div> -->
+                    <a href="/user/category/toys" class="donate-btn">Donate Now</a>
+                </div>
+
+                <!-- Daily Use Category -->
+                <div class="category-card">
+                    <span class="category-icon">🧼</span>
+                    <h3>Daily Use</h3>
+                    <p class="category-description">Share personal care items, toiletries, and everyday necessities for comfortable living.</p>
+                    <!-- <div class="category-stats">
+                        <div class="stat-item">
+                            <span class="stat-number" style="color: #667eea; font-size: 1.5rem;">High</span>
+                            <span class="stat-label">Demand</span>
+                        </div>
+                    </div> -->
+                    <a href="/user/category/daily-use" class="donate-btn">Donate Now</a>
+                </div>
+
+                <!-- Stationary Category -->
+                <div class="category-card">
+                    <span class="category-icon">📚</span>
+                    <h3>Stationary</h3>
+                    <p class="category-description">Support education by donating books, notebooks, pens, pencils, and learning materials.</p>
+                    <!-- <div class="category-stats">
+                        <div class="stat-item">
+                            <span class="stat-number" style="color: #27ae60; font-size: 1.5rem;">Good</span>
+                            <span class="stat-label">Availability</span>
+                        </div>
+                    </div> -->
+                    <a href="/user/category/stationary" class="donate-btn">Donate Now</a>
+                </div>
+
+                <!-- Utensils Category -->
+                <div class="category-card">
+                    <span class="category-icon">🍴</span>
+                    <h3>Utensils</h3>
+                    <p class="category-description">Donate kitchen utensils, plates, bowls, and dining essentials for meal preparation and service.</p>
+                    <!-- <div class="category-stats">
+                        <div class="stat-item">
+                            <span class="stat-number" style="color: #f39c12; font-size: 1.5rem;">Medium</span>
+                            <span class="stat-label">Need</span>
+                        </div>
+                    </div> -->
+                    <a href="/user/category/utensils" class="donate-btn">Donate Now</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- How It Works Section -->
+    <section class="how-it-works">
+        <div class="container">
+            <h2 class="section-title">How It Works</h2>
+            <p class="section-subtitle">Simple steps to make your donation and help those in need</p>
+            
+            <div class="steps-grid">
+                <div class="step-card">
+                    <div class="step-number">1</div>
+                    <h4>Choose Category</h4>
+                    <p>Select the category of items you want to donate from our available options.</p>
+                </div>
+                
+                <div class="step-card">
+                    <div class="step-number">2</div>
+                    <h4>Fill Details</h4>
+                    <p>Provide information about your donation including quantity, pickup location, and photos.</p>
+                </div>
+                
+                <div class="step-card">
+                    <div class="step-number">3</div>
+                    <h4>Schedule Pickup</h4>
+                    <p>Choose a convenient time for our team to collect your donated items from your location.</p>
+                </div>
+                
+                <div class="step-card">
+                    <div class="step-number">4</div>
+                    <h4>Make Impact</h4>
+                    <p>Your items are distributed to NGOs and reach those who need them the most in your community.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Impact Section -->
+    <section class="impact-section">
+        <div class="container">
+            <h2 class="section-title">Our Impact Together</h2>
+            <p class="section-subtitle">See the difference we're making in communities across the region</p>
+            
+            <div class="impact-grid">
+                <div class="impact-item">
+                    <span class="impact-number">15K+</span>
+                    <span class="impact-label">Items Donated</span>
+                </div>
+                <div class="impact-item">
+                    <span class="impact-number">500+</span>
+                    <span class="impact-label">Active Donors</span>
+                </div>
+                <div class="impact-item">
+                    <span class="impact-number">50+</span>
+                    <span class="impact-label">NGO Partners</span>
+                </div>
+                <div class="impact-item">
+                    <span class="impact-number">25K+</span>
+                    <span class="impact-label">Lives Impacted</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="cta-section">
+        <div class="container">
+            <div class="cta-content">
+                <h2>Ready to Make a Difference?</h2>
+                <p>Start your donation journey today and be part of the change you want to see in the world.</p>
+                <a href="/user/donate" class="cta-btn">Start Donating</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer Section -->
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-section">
+                <h4>DonateConnect Donor Portal</h4>
+                <p>Connecting generous hearts with meaningful causes. Together, we create a world where nothing goes to waste and everyone has access to what they need.</p>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025 DonateConnect. All rights reserved. | Making the world a better place, one donation at a time.</p>
+            </div>
+        </div>
+    </footer>
+</body>
+</html>
+
+
+
+
+<!-- <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
 </head>
     <body>
@@ -19,4 +734,4 @@
         <a href="/user/pending_requests">Pending Requests here</a>
         <h1>{{user_id}}</h1>
     </body>
-</html>
+</html> -->

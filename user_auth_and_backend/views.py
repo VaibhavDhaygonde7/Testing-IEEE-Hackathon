@@ -109,6 +109,8 @@ def login_view(request):
     form = LoginForm()
     return render(request, 'user_login.html', {'form' : form})
 
+def index(request):
+    return render(request, 'index.html')
 
 @jwt_required
 def user_home(request):
@@ -149,7 +151,7 @@ def category_test(request):
                 user.save()
 
                 print("Submitting the form ")
-                return HttpResponse("Requestion sent successfully")
+                return render(request, 'category_test.html', {'success_message' : "Request sent successfully!"})
 
             return redirect('/user/login')
     
@@ -160,7 +162,10 @@ def category_test(request):
 def user_pending_requests(request):
     id = findCurrentUser(request)
     user_donations = models.User.objects.get(id=ObjectId(id)).user_donations# this contains the entire collection 
-    return render(request, 'user_pending_requests.html', {'user_donations' : user_donations})
+    total_quantity = 0 
+    for user_donation in user_donations: 
+        total_quantity = total_quantity + user_donation.quantity
+    return render(request, 'user_pending_requests.html', {'user_donations' : user_donations, 'Total_Quantity' : total_quantity})
 
 @jwt_required
 def category_clothes(request):
@@ -194,7 +199,7 @@ def category_clothes(request):
                 print(category.quantity)
 
                 print("Submitting the form ")
-                return HttpResponse("Requestion sent successfully")
+                return render(request, 'category_test.html', {'success_message' : "Request sent successfully!"})
 
             return redirect('/user/login')
     
@@ -229,7 +234,7 @@ def category_ration(request):
                 user.save()
 
                 print("Submitting the form ")
-                return HttpResponse("Requestion sent successfully")
+                return render(request, 'category_test.html', {'success_message' : "Request sent successfully!"})
 
             return redirect('/user/login')
 
@@ -265,7 +270,7 @@ def category_medical_supplies(request):
                 user.save()
 
                 print("Submitting the form ")
-                return HttpResponse("Requestion sent successfully")
+                return render(request, 'category_test.html', {'success_message' : "Request sent successfully!"})
 
             return redirect('/user/login')
 
@@ -301,7 +306,7 @@ def category_toys(request):
                 user.save()
 
                 print("Submitting the form ")
-                return HttpResponse("Requestion sent successfully")
+                return render(request, 'category_test.html', {'success_message' : "Request sent successfully!"})
 
             return redirect('/user/login')
 
@@ -337,7 +342,7 @@ def category_daily_use(request):
                 user.save()
 
                 print("Submitting the form ")
-                return HttpResponse("Requestion sent successfully")
+                return render(request, 'category_test.html', {'success_message' : "Request sent successfully!"})
 
             return redirect('/user/login')
 
@@ -373,7 +378,7 @@ def category_stationary(request):
                 user.save()
 
                 print("Submitting the form ")
-                return HttpResponse("Requestion sent successfully")
+                return render(request, 'category_test.html', {'success_message' : "Request sent successfully!"})
 
             return redirect('/user/login')
 
@@ -409,7 +414,7 @@ def category_utensils(request):
                 user.save()
 
                 print("Submitting the form ")
-                return HttpResponse("Requestion sent successfully")
+                return render(request, 'category_test.html', {'success_message' : "Request sent successfully!"})
 
             return redirect('/user/login')
 

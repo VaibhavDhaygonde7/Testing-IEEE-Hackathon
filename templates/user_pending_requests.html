@@ -3,16 +3,520 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>My Pending Requests - DonateConnect</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background-color: #f8f9fa;
+        }
+
+        /* Header Section */
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 1rem 0;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 2rem;
+        }
+
+        .logo {
+            font-size: 2rem;
+            font-weight: bold;
+            color: #fff;
+            text-decoration: none;
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+            align-items: center;
+        }
+
+        .nav-links a {
+            color: white;
+            text-decoration: none;
+            font-weight: 500;
+            transition: opacity 0.3s;
+        }
+
+        .nav-links a:hover {
+            opacity: 0.8;
+        }
+
+        .logout-btn {
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            padding: 0.5rem 1rem;
+            border-radius: 25px;
+            text-decoration: none;
+            transition: all 0.3s;
+        }
+
+        .logout-btn:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: translateY(-1px);
+        }
+
+        /* Page Header Section */
+        .page-header {
+            background: linear-gradient(rgba(102, 126, 234, 0.1), rgba(118, 75, 162, 0.1));
+            padding: 3rem 0;
+            text-align: center;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+        .page-header h1 {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            color: #2c3e50;
+            font-weight: 700;
+        }
+
+        .page-header p {
+            font-size: 1.2rem;
+            color: #5a6c7d;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        /* Donations Summary */
+        .donations-summary {
+            background: rgba(255, 255, 255, 0.9);
+            padding: 1.5rem;
+            border-radius: 15px;
+            display: inline-block;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+            margin-top: 2rem;
+        }
+
+        .summary-stats {
+            display: flex;
+            gap: 2rem;
+            align-items: center;
+        }
+
+        .stat-item {
+            text-align: center;
+        }
+
+        .stat-number {
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: #667eea;
+            display: block;
+        }
+
+        .stat-label {
+            font-size: 0.9rem;
+            color: #5a6c7d;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        /* Donations Section */
+        .donations-section {
+            padding: 4rem 0;
+            background: white;
+            min-height: 60vh;
+        }
+
+        .donations-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+        /* Empty State Styling */
+        .empty-donations {
+            text-align: center;
+            padding: 4rem 2rem;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            border: 2px solid #f8f9fa;
+            animation: fadeInUp 0.6s ease-out;
+        }
+
+        .empty-donations-icon {
+            font-size: 5rem;
+            color: #95a5a6;
+            margin-bottom: 2rem;
+        }
+
+        .empty-donations h3 {
+            font-size: 2rem;
+            color: #2c3e50;
+            margin-bottom: 1rem;
+        }
+
+        .empty-donations p {
+            font-size: 1.1rem;
+            color: #5a6c7d;
+            margin-bottom: 2rem;
+            line-height: 1.6;
+        }
+
+        .donate-now-btn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 1rem 2rem;
+            border: none;
+            border-radius: 25px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            display: inline-block;
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+        }
+
+        .donate-now-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.4);
+            text-decoration: none;
+            color: white;
+        }
+
+        /* Donation Cards Grid */
+        .donations-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+
+        .donation-card {
+            background: white;
+            border-radius: 20px;
+            padding: 2rem;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            border: 2px solid #f8f9fa;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s ease;
+            animation: fadeInUp 0.6s ease-out;
+        }
+
+        .donation-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+
+        .donation-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+            border-color: #667eea;
+        }
+
+        .donation-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 1.5rem;
+        }
+
+        .donation-info {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .category-icon {
+            font-size: 2.5rem;
+            flex-shrink: 0;
+        }
+
+        .donation-details h3 {
+            font-size: 1.5rem;
+            color: #2c3e50;
+            margin-bottom: 0.3rem;
+        }
+
+        .donation-label {
+            font-size: 0.85rem;
+            color: #5a6c7d;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .quantity-badge {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 0.8rem 1.2rem;
+            border-radius: 25px;
+            font-weight: bold;
+            font-size: 1.1rem;
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            flex-shrink: 0;
+            min-width: 80px;
+        }
+
+        .quantity-label {
+            font-size: 0.7rem;
+            opacity: 0.9;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 0.2rem;
+        }
+
+        .quantity-number {
+            font-size: 1.2rem;
+            font-weight: bold;
+        }
+
+        /* Category-specific icons */
+        .category-clothes .category-icon::before { content: '👕'; }
+        .category-ration .category-icon::before { content: '🍛'; }
+        .category-medical-supplies .category-icon::before { content: '🏥'; }
+        .category-toys .category-icon::before { content: '🧸'; }
+        .category-daily-use .category-icon::before { content: '🧼'; }
+        .category-stationary .category-icon::before { content: '📚'; }
+        .category-utensils .category-icon::before { content: '🍴'; }
+
+        /* Default icon for unrecognized categories */
+        .category-icon::before {
+            content: '📦';
+        }
+
+        /* Footer */
+        .footer {
+            background: #2c3e50;
+            color: white;
+            padding: 3rem 0 1rem;
+            text-align: center;
+            margin-top: 4rem;
+        }
+
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+        .footer-section {
+            margin-bottom: 2rem;
+        }
+
+        .footer-section h4 {
+            font-size: 1.3rem;
+            margin-bottom: 1rem;
+            color: #ecf0f1;
+        }
+
+        .footer-section p {
+            color: #bdc3c7;
+            line-height: 1.8;
+        }
+
+        .footer-bottom {
+            border-top: 1px solid #34495e;
+            padding-top: 1rem;
+            margin-top: 2rem;
+            color: #95a5a6;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .nav-container {
+                flex-direction: column;
+                gap: 1rem;
+            }
+
+            .nav-links {
+                gap: 1rem;
+            }
+
+            .page-header h1 {
+                font-size: 2.5rem;
+            }
+
+            .donations-grid {
+                grid-template-columns: 1fr;
+                gap: 1.5rem;
+            }
+
+            .summary-stats {
+                flex-direction: column;
+                gap: 1rem;
+            }
+
+            .donation-header {
+                flex-direction: column;
+                gap: 1rem;
+                align-items: center;
+                text-align: center;
+            }
+        }
+
+        /* Loading Animation */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .donation-card:nth-child(1) { animation-delay: 0.1s; }
+        .donation-card:nth-child(2) { animation-delay: 0.2s; }
+        .donation-card:nth-child(3) { animation-delay: 0.3s; }
+        .donation-card:nth-child(4) { animation-delay: 0.4s; }
+        .donation-card:nth-child(5) { animation-delay: 0.5s; }
+        .donation-card:nth-child(6) { animation-delay: 0.6s; }
+        .donation-card:nth-child(7) { animation-delay: 0.7s; }
+    </style>
 </head>
 <body>
-    <ul>
-        {% for user_donation in user_donations %}
-        <li>
-            Item: {{ user_donation.item }} <br>
-            Quantity: {{ user_donation.quantity }} <br>
-        </li>
-        {% endfor %}
-    </ul>
+    <!-- Header Section -->
+    <header class="header">
+        <div class="nav-container">
+            <a href="/" class="logo">DonateConnect</a>
+            <ul class="nav-links">
+                <li><a href="/user/home">Home</a></li>
+                <li><a href="/user/pending-requests">My Donations</a></li>
+                <li><a href="/user/profile">Profile</a></li>
+                <li><a href="/user/logout" class="logout-btn">Logout</a></li>
+            </ul>
+        </div>
+    </header>
+
+    <!-- Page Header -->
+    <section class="page-header">
+        <div class="container">
+            <h1>My Donations</h1>
+            <p>View and manage your donation submissions to help those in need</p>
+            
+            <!-- Donations Summary (shown only when donations exist) -->
+            {% if user_donations %}
+                <div class="donations-summary">
+                    <div class="summary-stats">
+                        <div class="stat-item">
+                            <span class="stat-number">{{ user_donations|length }}</span>
+                            <span class="stat-label">Total Donations</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-number">
+                                {{Total_Quantity}}
+                            </span>
+                            <span class="stat-label">Total Quantity</span>
+                        </div>
+                    </div>
+                </div>
+            {% endif %}
+        </div>
+    </section>
+
+    <!-- Donations Section -->
+    <section class="donations-section">
+        <div class="donations-container">
+            {% if user_donations %}
+                <div class="donations-grid">
+                    {% for user_donation in user_donations %}
+                        <div class="donation-card category-{{ user_donation.item|lower|slugify }}">
+                            <div class="donation-header">
+                                <div class="donation-info">
+                                    <div class="category-icon"></div>
+                                    <div class="donation-details">
+                                        <h3>{{ user_donation.item|title }}</h3>
+                                        <div class="donation-label">Donated Item</div>
+                                    </div>
+                                </div>
+                                <div class="quantity-badge">
+                                    <div class="quantity-label">Qty</div>
+                                    <div class="quantity-number">{{ user_donation.quantity }}</div>
+                                </div>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+                
+            {% else %}
+                <!-- Empty State Display -->
+                <div class="empty-donations">
+                    <div class="empty-donations-icon">📦</div>
+                    <h3>No Donations Yet</h3>
+                    <p>You haven't made any donations yet. Start making a difference by donating items to help those in need in your community.</p>
+                    <a href="/user/home" class="donate-now-btn">Start Donating</a>
+                </div>
+            {% endif %}
+        </div>
+    </section>
+
+    <!-- Footer Section -->
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-section">
+                <h4>DonateConnect Donor Portal</h4>
+                <p>Connecting generous hearts with meaningful causes. Together, we create a world where nothing goes to waste and everyone has access to what they need.</p>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025 DonateConnect. All rights reserved. | Making the world a better place, one donation at a time.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Add smooth animations when cards are loaded
+            const donationCards = document.querySelectorAll('.donation-card');
+            
+            donationCards.forEach((card, index) => {
+                card.style.animationDelay = `${index * 0.1}s`;
+            });
+        });
+    </script>
 </body>
 </html>
+
+
+
+
+
+
+
+<!-- <ul>
+    {% for user_donation in user_donations %}
+    <li>
+        Item: {{ user_donation.item }} <br>
+        Quantity: {{ user_donation.quantity }} <br>
+    </li>
+    {% endfor %}
+</ul> -->

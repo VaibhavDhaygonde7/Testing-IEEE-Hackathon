@@ -3,18 +3,605 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>NGO Dashboard - DonateConnect</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background-color: #f8f9fa;
+        }
+
+        /* Header Section */
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 1rem 0;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 2rem;
+        }
+
+        .logo {
+            font-size: 2rem;
+            font-weight: bold;
+            color: #fff;
+            text-decoration: none;
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+            align-items: center;
+        }
+
+        .nav-links a {
+            color: white;
+            text-decoration: none;
+            font-weight: 500;
+            transition: opacity 0.3s;
+        }
+
+        .nav-links a:hover {
+            opacity: 0.8;
+        }
+
+        .logout-btn {
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            padding: 0.5rem 1rem;
+            border-radius: 25px;
+            text-decoration: none;
+            transition: all 0.3s;
+        }
+
+        .logout-btn:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: translateY(-1px);
+        }
+
+        /* Welcome Section */
+        .welcome-section {
+            background: linear-gradient(rgba(102, 126, 234, 0.1), rgba(118, 75, 162, 0.1));
+            padding: 3rem 0;
+            text-align: center;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+        .welcome-content h1 {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            color: #2c3e50;
+            font-weight: 700;
+        }
+
+        .welcome-content p {
+            font-size: 1.2rem;
+            color: #5a6c7d;
+            max-width: 700px;
+            margin: 0 auto;
+        }
+
+        /* Categories Section */
+        .categories-section {
+            padding: 4rem 0;
+            background: white;
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: 2.5rem;
+            color: #2c3e50;
+            margin-bottom: 1rem;
+        }
+
+        .section-subtitle {
+            text-align: center;
+            color: #5a6c7d;
+            font-size: 1.1rem;
+            margin-bottom: 3rem;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .categories-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+        .category-card {
+            background: white;
+            border-radius: 20px;
+            padding: 2rem;
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+            border: 2px solid #f8f9fa;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .category-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+
+        .category-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+            border-color: #667eea;
+        }
+
+        .category-icon {
+            font-size: 4rem;
+            margin-bottom: 1.5rem;
+            display: block;
+        }
+
+        .category-card h3 {
+            font-size: 1.8rem;
+            margin-bottom: 1rem;
+            color: #2c3e50;
+            font-weight: 600;
+        }
+
+        .category-description {
+            color: #5a6c7d;
+            margin-bottom: 2rem;
+            line-height: 1.6;
+            font-size: 1rem;
+        }
+
+        .category-stats {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 2rem;
+            padding: 1rem;
+            background: #f8f9fa;
+            border-radius: 12px;
+        }
+
+        .stat-item {
+            text-align: center;
+        }
+
+        .stat-number {
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: #667eea;
+            display: block;
+        }
+
+        .stat-label {
+            font-size: 0.9rem;
+            color: #5a6c7d;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-top: 0.5rem;
+        }
+
+        .view-items-btn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 1rem 2rem;
+            border: none;
+            border-radius: 25px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            display: inline-block;
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+        }
+
+        .view-items-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.4);
+            text-decoration: none;
+            color: white;
+        }
+
+        /* Quick Actions Section */
+        .quick-actions {
+            background: #f8f9fa;
+            padding: 4rem 0;
+        }
+
+        .actions-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+        .action-card {
+            background: white;
+            padding: 2rem;
+            border-radius: 15px;
+            text-align: center;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+        }
+
+        .action-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(0,0,0,0.15);
+        }
+
+        .action-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            color: #667eea;
+        }
+
+        .action-card h4 {
+            font-size: 1.3rem;
+            color: #2c3e50;
+            margin-bottom: 0.5rem;
+        }
+
+        .action-card p {
+            color: #5a6c7d;
+            font-size: 0.9rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .action-btn {
+            background: transparent;
+            color: #667eea;
+            border: 2px solid #667eea;
+            padding: 0.8rem 1.5rem;
+            border-radius: 25px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            display: inline-block;
+        }
+
+        .action-btn:hover {
+            background: #667eea;
+            color: white;
+            transform: translateY(-2px);
+            text-decoration: none;
+        }
+
+        /* Footer */
+        .footer {
+            background: #2c3e50;
+            color: white;
+            padding: 3rem 0 1rem;
+            text-align: center;
+        }
+
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+        .footer-section {
+            margin-bottom: 2rem;
+        }
+
+        .footer-section h4 {
+            font-size: 1.3rem;
+            margin-bottom: 1rem;
+            color: #ecf0f1;
+        }
+
+        .footer-section p {
+            color: #bdc3c7;
+            line-height: 1.8;
+        }
+
+        .footer-bottom {
+            border-top: 1px solid #34495e;
+            padding-top: 1rem;
+            margin-top: 2rem;
+            color: #95a5a6;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .nav-container {
+                flex-direction: column;
+                gap: 1rem;
+            }
+
+            .nav-links {
+                gap: 1rem;
+            }
+
+            .welcome-content h1 {
+                font-size: 2.5rem;
+            }
+
+            .categories-grid {
+                grid-template-columns: 1fr;
+                gap: 1.5rem;
+            }
+
+            .actions-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Loading Animation */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .category-card, .action-card {
+            animation: fadeInUp 0.6s ease-out;
+            animation-fill-mode: both;
+        }
+
+        .category-card:nth-child(1) { animation-delay: 0.1s; }
+        .category-card:nth-child(2) { animation-delay: 0.2s; }
+        .category-card:nth-child(3) { animation-delay: 0.3s; }
+        .category-card:nth-child(4) { animation-delay: 0.4s; }
+        .category-card:nth-child(5) { animation-delay: 0.5s; }
+        .category-card:nth-child(6) { animation-delay: 0.6s; }
+        .category-card:nth-child(7) { animation-delay: 0.7s; }
+    </style>
 </head>
 <body>
-    <!-- <h1>Hello</h1>
-    <h3>{{ ngo_id }}</h3> -->
-    {% for category in categories %}
-        <p>{{category.category_name}}</p>
-        <p>{{category.category_quantity}}</p>
-    <a href="/ngo/category/{{ category.category_name }}/">Add {{category.category_name}}</a>
-    {% endfor %}
+    <!-- Header Section -->
+    <header class="header">
+        <div class="nav-container">
+            <a href="/" class="logo">DonateConnect</a>
+            <ul class="nav-links">
+                <li><a href="/ngo/home">Dashboard</a></li>
+                <li><a href="/ngo/ngo_cart">My Orders</a></li>
+            </ul>
+        </div>
+    </header>
 
-    <a href="/ngo/ngo_cart">Cart</a>
+    <!-- Welcome Section -->
+    <section class="welcome-section">
+        <div class="container">
+            <div class="welcome-content">
+                <h1>Welcome to Your NGO Dashboard</h1>
+                <p>Browse and order donated items across various categories to support your mission and help those in need.</p>
+            </div>
+        </div>
+    </section>
 
+    <!-- Categories Section -->
+    <section class="categories-section">
+        <div class="container">
+            <h2 class="section-title">Available Categories</h2>
+            <p class="section-subtitle">Explore donated items organized by category. Click on any category to view available items and place your order.</p>
+            
+            <div class="categories-grid">
+                <!-- Clothes Category -->
+                <div class="category-card">
+                    <span class="category-icon">👕</span>
+                    <h3>Clothes</h3>
+                    <p class="category-description">Donated clothing items including shirts, pants, dresses, jackets, and accessories for all ages and sizes.</p>
+                    <div class="category-stats">
+                        <div class="stat-item">
+                            {% for category in categories %}
+                                {% if category.category_name == "Clothes" %}
+                                    <span class="stat-number">{{ category.category_quantity }}</span>
+                                {% endif %}
+                            {% endfor %}
+                            <span class="stat-label">Items Available</span>
+                        </div>
+                    </div>
+                    <a href="/ngo/category/Clothes" class="view-items-btn">View Items</a>
+                </div>
+
+                <!-- Ration Category -->
+                <div class="category-card">
+                    <span class="category-icon">🍛</span>
+                    <h3>Ration</h3>
+                    <p class="category-description">Food items, groceries, dry goods, and essential nutrition supplies to support feeding programs.</p>
+                    <div class="category-stats">
+                        <div class="stat-item">
+                            {% for category in categories %}
+                                {% if category.category_name == "Ration" %}
+                                    <span class="stat-number">{{ category.category_quantity }}</span>
+                                {% endif %}
+                            {% endfor %}
+                            <span class="stat-label">Items Available</span>
+                        </div>
+                    </div>
+                    <a href="/ngo/category/Ration" class="view-items-btn">View Items</a>
+                </div>
+
+                <!-- Medical Supplies Category -->
+                <div class="category-card">
+                    <span class="category-icon">🏥</span>
+                    <h3>Medical Supplies</h3>
+                    <p class="category-description">First aid kits, medical equipment, hygiene products, and health-related supplies for community care.</p>
+                    <div class="category-stats">
+                        <div class="stat-item">
+                            {% for category in categories %}
+                                {% if category.category_name == "Medical_Supplies" %}
+                                    <span class="stat-number">{{ category.category_quantity }}</span>
+                                {% endif %}
+                            {% endfor %}
+                            <span class="stat-label">Items Available</span>
+                        </div>
+                    </div>
+                    <a href="/ngo/category/Medical_Supplies" class="view-items-btn">View Items</a>
+                </div>
+
+                <!-- Toys Category -->
+                <div class="category-card">
+                    <span class="category-icon">🧸</span>
+                    <h3>Toys</h3>
+                    <p class="category-description">Educational toys, games, puzzles, and recreational items to bring joy and learning to children.</p>
+                    <div class="category-stats">
+                        <div class="stat-item">
+                            {% for category in categories %}
+                                {% if category.category_name == "Toys" %}
+                                    <span class="stat-number">{{ category.category_quantity }}</span>
+                                {% endif %}
+                            {% endfor %}
+                            <span class="stat-label">Items Available</span>
+                        </div>
+                    </div>
+                    <a href="/ngo/category/Toys" class="view-items-btn">View Items</a>
+                </div>
+
+                <!-- Daily Use Category -->
+                <div class="category-card">
+                    <span class="category-icon">🧼</span>
+                    <h3>Daily Use</h3>
+                    <p class="category-description">Personal care items, toiletries, household essentials, and everyday necessities for comfortable living.</p>
+                    <div class="category-stats">
+                        <div class="stat-item">
+                            {% for category in categories %}
+                                {% if category.category_name == "Daily_Use" %}
+                                    <span class="stat-number">{{ category.category_quantity }}</span>
+                                {% endif %}
+                            {% endfor %}
+                            <span class="stat-label">Items Available</span>
+                        </div>
+                    </div>
+                    <a href="/ngo/category/Daily_Use" class="view-items-btn">View Items</a>
+                </div>
+
+                <!-- Stationary Category -->
+                <div class="category-card">
+                    <span class="category-icon">📚</span>
+                    <h3>Stationary</h3>
+                    <p class="category-description">Books, notebooks, pens, pencils, and educational materials to support learning and development.</p>
+                    <div class="category-stats">
+                        <div class="stat-item">
+                            {% for category in categories %}
+                                {% if category.category_name == "Stationary" %}
+                                    <span class="stat-number">{{ category.category_quantity }}</span>
+                                {% endif %}
+                            {% endfor %}
+                            <span class="stat-label">Items Available</span>
+                        </div>
+                    </div>
+                    <a href="/ngo/category/Stationary" class="view-items-btn">View Items</a>
+                </div>
+
+                <!-- Utensils Category -->
+                <div class="category-card">
+                    <span class="category-icon">🍴</span>
+                    <h3>Utensils</h3>
+                    <p class="category-description">Kitchen utensils, plates, bowls, cooking equipment, and dining essentials for meal preparation and service.</p>
+                    <div class="category-stats">
+                        <div class="stat-item">
+                            {% for category in categories %}
+                                {% if category.category_name == "Utensils" %}
+                                    <span class="stat-number">{{ category.category_quantity }}</span>
+                                {% endif %}
+                            {% endfor %}
+                            <span class="stat-label">Items Available</span>
+                        </div>
+                    </div>
+                    <a href="/ngo/category/Utensils" class="view-items-btn">View Items</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Quick Actions Section -->
+    <!-- <section class="quick-actions">
+        <div class="container">
+            <h2 class="section-title">Quick Actions</h2>
+            <div class="actions-grid">
+                <div class="action-card">
+                    <div class="action-icon">📦</div>
+                    <h4>View All Orders</h4>
+                    <p>Check the status of your current and past orders</p>
+                    <a href="/ngo/ngo_cart" class="action-btn">View Orders</a>
+                </div>
+                
+                <div class="action-card">
+                    <div class="action-icon">🔍</div>
+                    <h4>Search Items</h4>
+                    <p>Find specific items across all categories</p>
+                    <a href="/ngo/search" class="action-btn">Search Now</a>
+                </div>
+                
+                <div class="action-card">
+                    <div class="action-icon">📋</div>
+                    <h4>Update Profile</h4>
+                    <p>Manage your NGO information and preferences</p>
+                    <a href="/ngo/profile" class="action-btn">Edit Profile</a>
+                </div>
+                
+                <div class="action-card">
+                    <div class="action-icon">📞</div>
+                    <h4>Contact Support</h4>
+                    <p>Get help with any questions or issues</p>
+                    <a href="/ngo/support" class="action-btn">Get Help</a>
+                </div>
+            </div>
+        </div>
+    </section> -->
+
+    <!-- Footer Section -->
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-section">
+                <h4>DonateConnect NGO Portal</h4>
+                <p>Empowering NGOs to access donated resources efficiently. Together, we create a world where nothing goes to waste and everyone has access to what they need.</p>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025 DonateConnect. All rights reserved. | Making the world a better place, one donation at a time.</p>
+            </div>
+        </div>
+    </footer>
 </body>
 </html>
+
+
+
+<!-- {% for category in categories %}
+    <p>{{category.category_name}}</p>
+    <p>{{category.category_quantity}}</p>
+<a href="/ngo/category/{{ category.category_name }}/">Add {{category.category_name}}</a>
+{% endfor %}
+
+<a href="/ngo/ngo_cart">Cart</a> -->

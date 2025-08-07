@@ -1,0 +1,443 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DonateConnect - Connecting Hearts Through Giving</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background-color: #f8f9fa;
+        }
+
+        /* Header Section */
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 1rem 0;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 2rem;
+        }
+
+        .logo {
+            font-size: 2rem;
+            font-weight: bold;
+            color: #fff;
+            text-decoration: none;
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+        }
+
+        .nav-links a {
+            color: white;
+            text-decoration: none;
+            font-weight: 500;
+            transition: opacity 0.3s;
+        }
+
+        .nav-links a:hover {
+            opacity: 0.8;
+        }
+
+        /* Introduction Section */
+        .introduction {
+            background: linear-gradient(rgba(102, 126, 234, 0.1), rgba(118, 75, 162, 0.1));
+            padding: 4rem 0;
+            text-align: center;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+        .intro-content h1 {
+            font-size: 3.5rem;
+            margin-bottom: 1rem;
+            color: #2c3e50;
+            font-weight: 700;
+        }
+
+        .intro-content p {
+            font-size: 1.3rem;
+            margin-bottom: 2rem;
+            color: #5a6c7d;
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .cta-button {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 1rem 2rem;
+            font-size: 1.1rem;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-block;
+            transition: transform 0.3s, box-shadow 0.3s;
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+        }
+
+        .cta-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.4);
+        }
+
+        /* User & NGO Info Section */
+        .info-section {
+            padding: 4rem 0;
+            background: white;
+        }
+
+        .info-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+        .info-card {
+            text-align: center;
+            padding: 2rem;
+            border-radius: 20px;
+            background: #fff;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .info-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+        }
+
+        .card-image {
+            width: 200px;
+            height: 200px;
+            background: #e9ecef;
+            border-radius: 50%;
+            margin: 0 auto 2rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 4rem;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            color: white;
+        }
+
+        .ngo-image {
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+        }
+
+        .info-card h3 {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+            color: #2c3e50;
+        }
+
+        .info-card p {
+            font-size: 1.1rem;
+            color: #5a6c7d;
+            margin-bottom: 2rem;
+            line-height: 1.8;
+        }
+
+        .button-group {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            padding: 0.8rem 1.5rem;
+            border: none;
+            border-radius: 25px;
+            font-size: 1rem;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.3s;
+            cursor: pointer;
+            display: inline-block;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+        }
+
+        .btn-secondary {
+            background: transparent;
+            color: #667eea;
+            border: 2px solid #667eea;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.4);
+        }
+
+        .btn-secondary:hover {
+            background: #667eea;
+            color: white;
+        }
+
+        /* Categories Preview */
+        .categories-preview {
+            background: #f8f9fa;
+            padding: 4rem 0;
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: 2.5rem;
+            color: #2c3e50;
+            margin-bottom: 3rem;
+        }
+
+        .categories-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 2rem;
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+        .category-card {
+            background: white;
+            padding: 2rem;
+            border-radius: 15px;
+            text-align: center;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+            transition: transform 0.3s;
+        }
+
+        .category-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .category-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+
+        /* Footer */
+        .footer {
+            background: #2c3e50;
+            color: white;
+            padding: 3rem 0 1rem;
+            text-align: center;
+        }
+
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+        .footer-section {
+            margin-bottom: 2rem;
+        }
+
+        .footer-section h4 {
+            font-size: 1.3rem;
+            margin-bottom: 1rem;
+            color: #ecf0f1;
+        }
+
+        .footer-section p {
+            color: #bdc3c7;
+            line-height: 1.8;
+        }
+
+        .footer-bottom {
+            border-top: 1px solid #34495e;
+            padding-top: 1rem;
+            margin-top: 2rem;
+            color: #95a5a6;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .nav-container {
+                flex-direction: column;
+                gap: 1rem;
+            }
+
+            .nav-links {
+                gap: 1rem;
+            }
+
+            .intro-content h1 {
+                font-size: 2.5rem;
+            }
+
+            .info-grid {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+            }
+
+            .button-group {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .btn {
+                width: 200px;
+            }
+
+            .categories-grid {
+                grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            }
+        }
+
+        /* Animation */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .info-card, .category-card {
+            animation: fadeInUp 0.6s ease-out;
+        }
+    </style>
+</head>
+<body>
+    <!-- Header Section -->
+    <header class="header">
+        <div class="nav-container">
+            <a href="/" class="logo">DonateConnect</a>
+            <ul class="nav-links">
+                <li><a href="#home">Home</a></li>
+                <li><a href="#about">About</a></li>
+                <li><a href="#categories">Categories</a></li>
+                <li><a href="#contact">Contact</a></li>
+            </ul>
+        </div>
+    </header>
+
+    <!-- Introduction Section -->
+    <section class="introduction" id="home">
+        <div class="container">
+            <div class="intro-content">
+                <h1>Connecting Hearts Through Giving</h1>
+                <p>Bridge the gap between generous donors and NGOs in need. Your unused items can become someone's treasure, creating a sustainable cycle of giving that transforms communities.</p>
+                <a href="#info" class="cta-button">Start Your Journey</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- User & NGO Info Section -->
+    <section class="info-section" id="info">
+        <div class="info-grid">
+            <!-- User Section -->
+            <div class="info-card">
+                <div class="card-image">
+                    👥
+                </div>
+                <h3>For Donors</h3>
+                <p>Have items you no longer need? Transform your unused belongings into hope for others. Join our community of generous donors and make a meaningful impact with every donation.</p>
+                <div class="button-group">
+                    <a href="/user/login" class="btn btn-primary">Login</a>
+                    <a href="/user/register" class="btn btn-secondary">Register</a>
+                </div>
+            </div>
+
+            <!-- NGO Section -->
+            <div class="info-card">
+                <div class="card-image ngo-image">
+                    🏢
+                </div>
+                <h3>For NGOs</h3>
+                <p>Access a wide range of donated items to support your cause. Connect with generous donors and find the resources your organization needs to make a difference in the community.</p>
+                <div class="button-group">
+                    <a href="/ngo/login" class="btn btn-primary">NGO Login</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Categories Preview Section -->
+    <section class="categories-preview" id="categories">
+        <div class="container">
+            <h2 class="section-title">Donation Categories</h2>
+            <div class="categories-grid">
+                <div class="category-card">
+                    <div class="category-icon">👕</div>
+                    <h4>Clothing</h4>
+                </div>
+                <div class="category-card">
+                    <div class="category-icon">📚</div>
+                    <h4>Books</h4>
+                </div>
+                <div class="category-card">
+                    <div class="category-icon">💻</div>
+                    <h4>Electronics</h4>
+                </div>
+                <div class="category-card">
+                    <div class="category-icon">🏠</div>
+                    <h4>Home Items</h4>
+                </div>
+                <div class="category-card">
+                    <div class="category-icon">🎯</div>
+                    <h4>Sports</h4>
+                </div>
+                <div class="category-card">
+                    <div class="category-icon">🎨</div>
+                    <h4>Art Supplies</h4>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer Section -->
+    <footer class="footer" id="contact">
+        <div class="footer-content">
+            <div class="footer-section">
+                <h4>DonateConnect</h4>
+                <p>Empowering communities through the spirit of giving. Together, we create a world where nothing goes to waste and everyone has access to what they need.</p>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025 DonateConnect. All rights reserved. | Making the world a better place, one donation at a time.</p>
+            </div>
+        </div>
+    </footer>
+</body>
+</html>

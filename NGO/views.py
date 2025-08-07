@@ -137,7 +137,7 @@ def category_clothes(request):
                 print(data['category_quantity'])
                 if category.category_quantity < data['category_quantity']:
                     print("select a lower quantity")
-                    return render(request, 'ngo_category_test.html', {'form' : category_test_form, 'error_message' : f"Please select a quantity less than {category.category_quantity}"})
+                    return render(request, 'ngo_category_test.html', {'form' : category_test_form, 'error_message' : f"Please select a quantity less than {category.category_quantity + 1}"})
 
                 ngo_cart = models.NGO_Cart(
                     category_name = "Clothes",
@@ -149,7 +149,7 @@ def category_clothes(request):
                 ngo.save()
 
                 print("Submitting the form ")
-                return HttpResponse("Requestion sent successfully")
+                return render(request, 'ngo_category_test.html', {'success_message' : "Request sent successfully, check your cart🛒"})
 
             return redirect('/ngo/login')
     
@@ -176,7 +176,7 @@ def category_ration(request):
                 print(data['category_quantity'])
                 if category.category_quantity < data['category_quantity']:
                     print("select a lower quantity")
-                    return render(request, 'ngo_category_test.html', {'form' : category_test_form, 'error_message' : f"Please select a quantity less than {category.category_quantity}"})
+                    return render(request, 'ngo_category_test.html', {'form' : category_test_form, 'error_message' : f"Please select a quantity less than {category.category_quantity + 1}"})
 
                 ngo_cart = models.NGO_Cart(
                     category_name = "Ration",
@@ -188,7 +188,7 @@ def category_ration(request):
                 ngo.save()
 
                 print("Submitting the form ")
-                return HttpResponse("Requestion sent successfully")
+                return render(request, 'ngo_category_test.html', {'success_message' : "Request sent successfully, check your cart🛒"})
 
             return redirect('/ngo/login')
     
@@ -215,7 +215,7 @@ def category_medical_supplies(request):
                 print(data['category_quantity'])
                 if category.category_quantity < data['category_quantity']:
                     print("select a lower quantity")
-                    return render(request, 'ngo_category_test.html', {'form' : category_test_form, 'error_message' : f"Please select a quantity less than {category.category_quantity}"})
+                    return render(request, 'ngo_category_test.html', {'form' : category_test_form, 'error_message' : f"Please select a quantity less than {category.category_quantity + 1}"})
 
                 ngo_cart = models.NGO_Cart(
                     category_name = "Medical_Supplies",
@@ -227,7 +227,7 @@ def category_medical_supplies(request):
                 ngo.save()
 
                 print("Submitting the form ")
-                return HttpResponse("Requestion sent successfully")
+                return render(request, 'ngo_category_test.html', {'success_message' : "Request sent successfully, check your cart🛒"})
 
             return redirect('/ngo/login')
     
@@ -254,7 +254,7 @@ def category_toys(request):
                 print(data['category_quantity'])
                 if category.category_quantity < data['category_quantity']:
                     print("select a lower quantity")
-                    return render(request, 'ngo_category_test.html', {'form' : category_test_form, 'error_message' : f"Please select a quantity less than {category.category_quantity}"})
+                    return render(request, 'ngo_category_test.html', {'form' : category_test_form, 'error_message' : f"Please select a quantity less than {category.category_quantity + 1}"})
 
                 ngo_cart = models.NGO_Cart(
                     category_name = "Toys",
@@ -266,7 +266,7 @@ def category_toys(request):
                 ngo.save()
 
                 print("Submitting the form ")
-                return HttpResponse("Requestion sent successfully")
+                return render(request, 'ngo_category_test.html', {'success_message' : "Request sent successfully, check your cart🛒"})
 
             return redirect('/ngo/login')
     
@@ -293,7 +293,7 @@ def category_daily_use(request):
                 print(data['category_quantity'])
                 if category.category_quantity < data['category_quantity']:
                     print("select a lower quantity")
-                    return render(request, 'ngo_category_test.html', {'form' : category_test_form, 'error_message' : f"Please select a quantity less than {category.category_quantity}"})
+                    return render(request, 'ngo_category_test.html', {'form' : category_test_form, 'error_message' : f"Please select a quantity less than {category.category_quantity + 1}"})
 
                 ngo_cart = models.NGO_Cart(
                     category_name = "Daily_Use",
@@ -305,7 +305,7 @@ def category_daily_use(request):
                 ngo.save()
 
                 print("Submitting the form ")
-                return HttpResponse("Requestion sent successfully")
+                return render(request, 'ngo_category_test.html', {'success_message' : "Request sent successfully, check your cart🛒"})
 
             return redirect('/ngo/login')
     
@@ -332,7 +332,7 @@ def category_stationary(request):
                 print(data['category_quantity'])
                 if category.category_quantity < data['category_quantity']:
                     print("select a lower quantity")
-                    return render(request, 'ngo_category_test.html', {'form' : category_test_form, 'error_message' : f"Please select a quantity less than {category.category_quantity}"})
+                    return render(request, 'ngo_category_test.html', {'form' : category_test_form, 'error_message' : f"Please select a quantity less than {category.category_quantity + 1}"})
 
                 ngo_cart = models.NGO_Cart(
                     category_name = "Stationary",
@@ -344,7 +344,7 @@ def category_stationary(request):
                 ngo.save()
 
                 print("Submitting the form ")
-                return HttpResponse("Requestion sent successfully")
+                return render(request, 'ngo_category_test.html', {'success_message' : "Request sent successfully, check your cart🛒"})
 
             return redirect('/ngo/login')
     
@@ -372,7 +372,7 @@ def category_utensils(request):
                 print(data['category_quantity'])
                 if category.category_quantity < data['category_quantity']:
                     print("select a lower quantity")
-                    return render(request, 'ngo_category_test.html', {'form' : category_test_form, 'error_message' : f"Please select a quantity less than {category.category_quantity}"})
+                    return render(request, 'ngo_category_test.html', {'form' : category_test_form, 'error_message' : f"Please select a quantity less than {category.category_quantity + 1}"})
 
                 ngo_cart = models.NGO_Cart(
                     category_name = "Utensils",
@@ -384,7 +384,7 @@ def category_utensils(request):
                 ngo.save()
 
                 print("Submitting the form ")
-                return HttpResponse("Requestion sent successfully")
+                return render(request, 'ngo_category_test.html', {'success_message' : "Request sent successfully, check your cart🛒"})
 
             return redirect('/ngo/login')
     
@@ -395,8 +395,8 @@ def category_utensils(request):
 def ngo_cart(request):
     ngo_id = findCurrentUser(request)
     ngo = models.NGO.objects.get(id=ObjectId(ngo_id))
-
-    return render(request, 'ngo_cart.html', {'ngo_cart' : ngo.ngo_cart})
+    total_quantity = sum(order.category_quantity for order in ngo.ngo_cart)
+    return render(request, 'ngo_cart.html', {'ngo_cart' : ngo.ngo_cart, 'Total_Quantity': total_quantity })
 
 @jwt_required
 def ngo_order(request):

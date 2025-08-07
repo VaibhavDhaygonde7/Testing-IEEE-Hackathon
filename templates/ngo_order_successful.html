@@ -3,9 +3,618 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Order Successful - DonateConnect</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background-color: #f8f9fa;
+        }
+
+        /* Header Section */
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 1rem 0;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 2rem;
+        }
+
+        .logo {
+            font-size: 2rem;
+            font-weight: bold;
+            color: #fff;
+            text-decoration: none;
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+            align-items: center;
+        }
+
+        .nav-links a {
+            color: white;
+            text-decoration: none;
+            font-weight: 500;
+            transition: opacity 0.3s;
+        }
+
+        .nav-links a:hover {
+            opacity: 0.8;
+        }
+
+        .logout-btn {
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            padding: 0.5rem 1rem;
+            border-radius: 25px;
+            text-decoration: none;
+            transition: all 0.3s;
+        }
+
+        .logout-btn:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: translateY(-1px);
+        }
+
+        /* Success Section */
+        .success-section {
+            padding: 4rem 0;
+            background: linear-gradient(rgba(102, 126, 234, 0.05), rgba(118, 75, 162, 0.05));
+            min-height: 80vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+        .success-card {
+            background: white;
+            border-radius: 25px;
+            padding: 4rem 3rem;
+            text-align: center;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.1);
+            border: 2px solid #f8f9fa;
+            position: relative;
+            overflow: hidden;
+            animation: slideUp 0.8s ease-out;
+        }
+
+        .success-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 6px;
+            background: linear-gradient(135deg, #27ae60 0%, #2ecc71 100%);
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Success Icon */
+        .success-icon {
+            width: 120px;
+            height: 120px;
+            background: linear-gradient(135deg, #27ae60 0%, #2ecc71 100%);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 2rem;
+            box-shadow: 0 10px 30px rgba(39, 174, 96, 0.3);
+            animation: checkmark 0.8s ease-out 0.3s both;
+        }
+
+        .success-icon::before {
+            content: '✓';
+            color: white;
+            font-size: 3.5rem;
+            font-weight: bold;
+        }
+
+        @keyframes checkmark {
+            0% {
+                transform: scale(0);
+                opacity: 0;
+            }
+            50% {
+                transform: scale(1.2);
+                opacity: 1;
+            }
+            100% {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+
+        /* Success Content */
+        .success-title {
+            font-size: 2.8rem;
+            color: #2c3e50;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            animation: fadeInUp 0.8s ease-out 0.5s both;
+        }
+
+        .success-subtitle {
+            font-size: 1.3rem;
+            color: #27ae60;
+            font-weight: 600;
+            margin-bottom: 1.5rem;
+            animation: fadeInUp 0.8s ease-out 0.6s both;
+        }
+
+        .success-message {
+            font-size: 1.1rem;
+            color: #5a6c7d;
+            line-height: 1.8;
+            margin-bottom: 3rem;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+            animation: fadeInUp 0.8s ease-out 0.7s both;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Order Details */
+        .order-details {
+            background: #f8f9fa;
+            padding: 2rem;
+            border-radius: 15px;
+            margin-bottom: 3rem;
+            animation: fadeInUp 0.8s ease-out 0.8s both;
+        }
+
+        .order-details h3 {
+            color: #2c3e50;
+            font-size: 1.5rem;
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+
+        .order-info {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .info-item {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 12px;
+            text-align: center;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+        }
+
+        .info-label {
+            font-size: 0.85rem;
+            color: #5a6c7d;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 0.5rem;
+        }
+
+        .info-value {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: #2c3e50;
+        }
+
+        .info-value.highlight {
+            color: #667eea;
+            font-size: 1.4rem;
+        }
+
+        /* Action Buttons */
+        .action-buttons {
+            display: flex;
+            gap: 1.5rem;
+            justify-content: center;
+            flex-wrap: wrap;
+            animation: fadeInUp 0.8s ease-out 0.9s both;
+        }
+
+        .action-btn {
+            padding: 1rem 2.5rem;
+            border-radius: 25px;
+            font-weight: 600;
+            font-size: 1.1rem;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            border: 2px solid;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.75rem;
+            min-width: 180px;
+            justify-content: center;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border-color: transparent;
+            box-shadow: 0 6px 20px rgba(102, 126, 234, 0.3);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 30px rgba(102, 126, 234, 0.4);
+            text-decoration: none;
+            color: white;
+        }
+
+        .btn-secondary {
+            background: transparent;
+            color: #667eea;
+            border-color: #667eea;
+        }
+
+        .btn-secondary:hover {
+            background: #667eea;
+            color: white;
+            transform: translateY(-3px);
+            text-decoration: none;
+        }
+
+        .btn-success {
+            background: linear-gradient(135deg, #27ae60 0%, #2ecc71 100%);
+            color: white;
+            border-color: transparent;
+            box-shadow: 0 6px 20px rgba(39, 174, 96, 0.3);
+        }
+
+        .btn-success:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 30px rgba(39, 174, 96, 0.4);
+            text-decoration: none;
+            color: white;
+        }
+
+        /* Next Steps */
+        .next-steps {
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.1), rgba(118, 75, 162, 0.1));
+            padding: 2rem;
+            border-radius: 15px;
+            margin-top: 3rem;
+            animation: fadeInUp 0.8s ease-out 1s both;
+        }
+
+        .next-steps h4 {
+            color: #2c3e50;
+            font-size: 1.3rem;
+            margin-bottom: 1rem;
+            text-align: center;
+        }
+
+        .steps-list {
+            list-style: none;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1rem;
+        }
+
+        .step-item {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+        }
+
+        .step-number {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            flex-shrink: 0;
+        }
+
+        .step-text {
+            font-size: 0.95rem;
+            color: #2c3e50;
+            line-height: 1.5;
+        }
+
+        /* Footer */
+        .footer {
+            background: #2c3e50;
+            color: white;
+            padding: 3rem 0 1rem;
+            text-align: center;
+            margin-top: 4rem;
+        }
+
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+        .footer-section {
+            margin-bottom: 2rem;
+        }
+
+        .footer-section h4 {
+            font-size: 1.3rem;
+            margin-bottom: 1rem;
+            color: #ecf0f1;
+        }
+
+        .footer-section p {
+            color: #bdc3c7;
+            line-height: 1.8;
+        }
+
+        .footer-bottom {
+            border-top: 1px solid #34495e;
+            padding-top: 1rem;
+            margin-top: 2rem;
+            color: #95a5a6;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .nav-container {
+                flex-direction: column;
+                gap: 1rem;
+            }
+
+            .nav-links {
+                gap: 1rem;
+            }
+
+            .success-card {
+                padding: 3rem 2rem;
+            }
+
+            .success-title {
+                font-size: 2.2rem;
+            }
+
+            .action-buttons {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .action-btn {
+                width: 100%;
+                max-width: 280px;
+            }
+
+            .order-info {
+                grid-template-columns: 1fr;
+            }
+
+            .steps-list {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Confetti Animation */
+        .confetti {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1000;
+        }
+
+        .confetti-piece {
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            background: #667eea;
+            animation: confetti-fall 3s linear infinite;
+        }
+
+        @keyframes confetti-fall {
+            0% {
+                transform: translateY(-100vh) rotate(0deg);
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(100vh) rotate(720deg);
+                opacity: 0;
+            }
+        }
+    </style>
 </head>
 <body>
-    <h1>ORDER SUCCESSFUL</h1>
+    <!-- Header Section -->
+    <header class="header">
+        <div class="nav-container">
+            <a href="/" class="logo">DonateConnect</a>
+            <ul class="nav-links">
+                <li><a href="/ngo/home">Dashboard</a></li>
+                <li><a href="/ngo/ngo_cart">My Cart</a></li>
+            </ul>
+        </div>
+    </header>
+
+    <!-- Success Section -->
+    <section class="success-section">
+        <div class="container">
+            <div class="success-card">
+                <div class="success-icon"></div>
+                
+                <h1 class="success-title">Order Successful!</h1>
+                <h2 class="success-subtitle">Your request has been submitted</h2>
+                
+                <p class="success-message">
+                    Thank you for your donation request! We have successfully received your order and our team will review it shortly. You will be notified via email once your request is approved and ready for delivery.
+                </p>
+
+                <!-- Order Details -->
+                <!-- <div class="order-details">
+                    <h3>📋 Order Summary</h3>
+                    <div class="order-info">
+                        <div class="info-item">
+                            <div class="info-label">Order ID</div>
+                            <div class="info-value highlight">#{{ order_id|default:"NGO-001" }}</div>
+                        </div>
+                        <div class="info-item">
+                            <div class="info-label">Categories Requested</div>
+                            <div class="info-value">{{ categories_count|default:"3" }}</div>
+                        </div>
+                        <div class="info-item">
+                            <div class="info-label">Total Quantity</div>
+                            <div class="info-value">{{ total_quantity|default:"25" }}</div>
+                        </div>
+                        <div class="info-item">
+                            <div class="info-label">Expected Processing</div>
+                            <div class="info-value">2-3 Days</div>
+                        </div>
+                    </div>
+                </div> -->
+
+
+                <!-- Next Steps -->
+                <div class="next-steps">
+                    <h4>📌 What happens next?</h4>
+                    <ul class="steps-list">
+                        <li class="step-item">
+                            <div class="step-number">1</div>
+                            <div class="step-text">Our team will review your request within 24 hours</div>
+                        </li>
+                        <li class="step-item">
+                            <div class="step-number">2</div>
+                            <div class="step-text">You'll receive an email confirmation once approved</div>
+                        </li>
+                        <li class="step-item">
+                            <div class="step-number">3</div>
+                            <div class="step-text">Items will be prepared and scheduled for delivery</div>
+                        </li>
+                        <li class="step-item">
+                            <div class="step-number">4</div>
+                            <div class="step-text">Track your order status through your dashboard</div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer Section -->
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-section">
+                <h4>DonateConnect NGO Portal</h4>
+                <p>Empowering NGOs to access donated resources efficiently. Together, we create a world where nothing goes to waste and everyone has access to what they need.</p>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025 DonateConnect. All rights reserved. | Making the world a better place, one donation at a time.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Create confetti effect
+            createConfetti();
+            
+            // Auto-redirect after 30 seconds (optional)
+            setTimeout(function() {
+                const redirectMessage = document.createElement('div');
+                redirectMessage.style.cssText = `
+                    position: fixed;
+                    bottom: 20px;
+                    right: 20px;
+                    background: #667eea;
+                    color: white;
+                    padding: 1rem;
+                    border-radius: 10px;
+                    font-size: 0.9rem;
+                    z-index: 1001;
+                    animation: fadeInUp 0.5s ease-out;
+                `;
+                redirectMessage.innerHTML = 'Redirecting to dashboard in 5 seconds...';
+                document.body.appendChild(redirectMessage);
+                
+                setTimeout(() => {
+                    window.location.href = '/ngo/home';
+                }, 10000);
+            }, 30000);
+            
+            function createConfetti() {
+                const colors = ['#667eea', '#764ba2', '#27ae60', '#2ecc71', '#f39c12', '#e74c3c'];
+                
+                for (let i = 0; i < 50; i++) {
+                    setTimeout(() => {
+                        const confetti = document.createElement('div');
+                        confetti.className = 'confetti-piece';
+                        confetti.style.left = Math.random() * 100 + '%';
+                        confetti.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+                        confetti.style.animationDelay = Math.random() * 3 + 's';
+                        confetti.style.animationDuration = (Math.random() * 3 + 2) + 's';
+                        
+                        document.body.appendChild(confetti);
+                        
+                        setTimeout(() => {
+                            confetti.remove();
+                        }, 6000);
+                    }, i * 100);
+                }
+            }
+        });
+    </script>
 </body>
 </html>

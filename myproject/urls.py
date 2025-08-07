@@ -16,10 +16,12 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include 
+from user_auth_and_backend import views
 
 urlpatterns = [
     # path('admin/', admin.site.urls),
     path('user/', include('user_auth_and_backend.urls')),
     path('ngo/', include('NGO.urls')),
     path('admin/', include('Custom_Admin.urls')),
+    path('', views.index, name='index'),  # Assuming you have a view for the index page
 ]
