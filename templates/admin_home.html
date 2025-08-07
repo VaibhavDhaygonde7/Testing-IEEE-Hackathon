@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <h1>It's my home bitch</h1>
+    
+    {% for user in users %}
+        <h2>{{user.user_name}}</h2>
+        <p>
+            {% for requests in user.user_donations %}
+                <h4>Quantity : {{requests.quantity}}</h4>
+                <h4>Drop-off location : {{requests.drop_off_location}}</h4>
+                <h4>Date : {{requests.date}}</h4>
+                <h4>Item : {{requests.item}}</h4>
+                
+
+            {% endfor %}
+        </p>
+    {% endfor %}
+
+</body>
+</html>

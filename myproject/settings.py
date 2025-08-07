@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'user_auth_and_backend',
     'rest_framework',
     'NGO',
+    'Custom_Admin',
 ]
 
 ## for authentication purposes
