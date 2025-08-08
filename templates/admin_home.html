@@ -592,10 +592,6 @@
             <a href="/" class="logo">DonateConnect</a>
             <ul class="nav-links">
                 <li><a href="/admin/home">Dashboard</a></li>
-                <li><a href="/admin/verification">Verification</a></li>
-                <li><a href="/admin/reports">Reports</a></li>
-                <li><a href="/admin/users">Users</a></li>
-                <li><a href="/admin/logout" class="logout-btn">Logout</a></li>
             </ul>
         </div>
     </header>
@@ -607,7 +603,7 @@
             <p>Review and manage all donation requests across the platform</p>
             
             <!-- Admin Summary -->
-            <div class="admin-summary">
+            <!-- <div class="admin-summary">
                 <div class="summary-stats">
                     <div class="stat-item">
                         <span class="stat-number">{{ total_donations|default:"25" }}</span>
@@ -626,7 +622,7 @@
                         <span class="stat-label">Registered NGOs</span>
                     </div>
                 </div>
-            </div>
+            </div> -->
         </div>
     </section>
 
@@ -687,10 +683,10 @@
                                 </div>
 
                                 <div class="donation-actions">
-                                    <a href='/admin/approve/?user_id={{user.id}}&photo_id={{requests.photo.grid_id}}' class="action-btn btn-approve">
+                                    <a href="/admin/approve/?user_id={{ user.id }}&photo_id={{ request.photo.grid_id }}" class="action-btn btn-approve">
                                         ✅ Approve
                                     </a>
-                                    <a href='/admin/reject/?user_id={{user.id}}&photo_id={{requests.photo.grid_id}}' class="action-btn btn-reject">
+                                    <a href="/admin/reject/?user_id={{ user.id }}&photo_id={{ request.photo.grid_id }}" class="action-btn btn-reject">
                                         ❌ Reject
                                     </a>
                                 </div>
@@ -780,6 +776,7 @@
     </script>
 </body>
 </html>
+
 
 
 
